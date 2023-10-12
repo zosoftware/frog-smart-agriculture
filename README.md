@@ -1,9 +1,10 @@
-# 产品介绍
+![index](img/giteebanner.jpg)
+
+> 专业版已经开发完成，开源代码正在剥离中，近日推送。
+
 ## 项目简介
 
 青蛙智慧农业平台-支持物联网设备；农业设备对接；支持BG28181接入摄像头（IPC、NVR）；支持mqtt、tcp、modbus、RS485协议；移动端包含：安卓、苹果、H5；支持农事管理；支持溯源（包含溯源H5）。
-
-
 
 > 官网地址：http://www.zosoft.top/
 >
@@ -15,21 +16,15 @@
 
 ## 技术介绍
 
-后端：springboot、mybatis
-
-数据库：mysql
-
-缓存：redis
-
-mqtt:emqx
-
-sip:javax.sip
-
-流媒体:zlmediakit
-
-前端:vue2
-
-移动端:uniapp
+- 服务端
+  - 相关技术：Spring boot、MyBatis、Spring Security、Jwt、Mysql、Redis、TDengine、EMQX、Netty等
+  - 开发工具：IDEA
+- Web端
+  - 相关技术：ES6、Vue、Vuex、Vue-router、Vue-cli、Axios、Element-ui等
+  - 开发工具：Visual Studio Code
+- 移动端（微信小程序 / Android / Ios / H5）
+  - 相关技术：uniapp、[uView](https://gitee.com/link?target=https%3A%2F%2Fwww.uviewui.com%2F)、[uChart](https://gitee.com/link?target=https%3A%2F%2Fwww.ucharts.cn%2F)
+  - 开发工具：HBuilder
 
 ## 设备类型
 

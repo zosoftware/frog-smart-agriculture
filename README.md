@@ -10,28 +10,36 @@
 
 > 官网地址：http://www.zosoft.top/
 >
-> 体验地址：http://system.zosoft.top/(admin,123admin)
+> 体验地址：http://system.zosoft.top/   (账号：admin,密码：123admin)
 
 > 联系方式：18112857630（微信同号），请备注来意
 >
 
-## 技术介绍
+## 技术栈
 
 - 服务端
-  - 相关技术：Spring boot、MyBatis、Spring Security、Jwt、Mysql、Redis、TDengine、EMQX、Netty等
-  - 开发工具：IDEA
+  
+  相关技术：Spring boot、MyBatis、Spring Security、Jwt、Mysql、Redis、TDengine、EMQX、Netty等
+  
+  开发工具：IDEA
+  
 - Web端
-  - 相关技术：ES6、Vue、Vuex、Vue-router、Vue-cli、Axios、Element-ui等
-  - 开发工具：Visual Studio Code
+  
+  相关技术：ES6、Vue、Vuex、Vue-router、Vue-cli、Axios、Element-ui等
+  
+  开发工具：Visual Studio Code
+  
 - 移动端（微信小程序 / Android / Ios / H5）
-  - 相关技术：uniapp、[uView](https://gitee.com/link?target=https%3A%2F%2Fwww.uviewui.com%2F)、[uChart](https://gitee.com/link?target=https%3A%2F%2Fwww.ucharts.cn%2F)
-  - 开发工具：HBuilder
+  
+  相关技术：uniapp、[uView](https://gitee.com/link?target=https%3A%2F%2Fwww.uviewui.com%2F)、[uChart](https://gitee.com/link?target=https%3A%2F%2Fwww.ucharts.cn%2F)
+  
+  开发工具：HBuilder
 
 ## 设备类型
 
-物联网设备：支持市mqtt、TCP设备
+物联网设备：支持mqtt、TCP设备
 
-摄像头：支持各品牌摄像头
+摄像头：支持各品牌摄像头（需支持国标GB28181协议）
 
 ## 功能介绍
 ### 工作台

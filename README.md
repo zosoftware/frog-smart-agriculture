@@ -3,6 +3,16 @@
 
 青蛙智慧农业平台-支持物联网设备；农业设备对接；支持BG28181接入摄像头（IPC、NVR）；支持mqtt、tcp、modbus、RS485协议；移动端包含：安卓、苹果、H5；支持农事管理；支持溯源（包含溯源H5）。
 
+
+
+> 官网地址：http://www.zosoft.top/
+>
+> 体验地址：http://system.zosoft.top/
+
+
+
+联系方式:18112857630(微信同号)
+
 ## 技术介绍
 
 后端：springboot、mybatis
@@ -20,6 +30,12 @@ sip:javax.sip
 前端:vue2
 
 移动端:uniapp
+
+## 设备类型
+
+物联网设备：支持市mqtt、TCP设备
+
+摄像头：支持各品牌摄像头
 
 ## 功能介绍
 ### 工作台

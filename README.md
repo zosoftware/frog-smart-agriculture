@@ -10,7 +10,7 @@
 
 > 官网地址：http://www.zosoft.top/
 >
-> 体验地址：http://system.zosoft.top/
+> 体验地址：http://system.zosoft.top/(admin,123admin)
 
 > 联系方式：18112857630（微信同号），请备注来意
 >

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.iot.mapper.GoviewProjectDataMapper">
+    
+    <resultMap type="com.frog.iot.domain.GoviewProjectData" id="GoviewProjectDataResult">
+        <result property="id"    column="id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectGoviewProjectDataVo">
+        select id, project_id, create_time,update_time, create_by, content from iot_goview_project_data
+    </sql>
+
+    <select id="selectGoviewProjectDataList" parameterType="com.frog.iot.domain.GoviewProjectData" resultMap="GoviewProjectDataResult">
+        <include refid="selectGoviewProjectDataVo"/>
+        <where>  
+            <if test="projectId != null  and projectId != ''"> and project_id = #{projectId}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoviewProjectDataById" parameterType="String" resultMap="GoviewProjectDataResult">
+        <include refid="selectGoviewProjectDataVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectGoviewProjectDataByProjectId" resultType="com.frog.iot.domain.GoviewProjectData">
+        <include refid="selectGoviewProjectDataVo"/>
+        where project_id = #{projectId}
+    </select>
+
+    <insert id="insertGoviewProjectData" parameterType="com.frog.iot.domain.GoviewProjectData">
+        insert into iot_goview_project_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="projectId != null and projectId != ''">project_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="content != null">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectId != null and projectId != ''">#{projectId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="content != null">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoviewProjectData" parameterType="com.frog.iot.domain.GoviewProjectData">
+        update iot_goview_project_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null and projectId != ''">project_id = #{projectId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="content != null">content = #{content},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoviewProjectDataById" parameterType="String">
+        delete from iot_goview_project_data where id = #{id}
+    </delete>
+
+    <delete id="deleteGoviewProjectDataByIds" parameterType="String">
+        delete from iot_goview_project_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

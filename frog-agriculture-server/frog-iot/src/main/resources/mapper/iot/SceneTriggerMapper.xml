@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.iot.mapper.SceneTriggerMapper">
+    
+    <resultMap type="com.frog.iot.domain.SceneTrigger" id="SceneTriggerResult">
+        <result property="sceneTriggerId"    column="scene_trigger_id"    />
+        <result property="sceneId"    column="scene_id"    />
+        <result property="status"    column="status"    />
+        <result property="source"    column="source"    />
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
+        <result property="operator"    column="operator"    />
+        <result property="type"    column="type"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="jobId"    column="job_id"    />
+        <result property="cronExpression"    column="cron_expression"    />
+        <result property="isAdvance"    column="is_advance"    />
+    </resultMap>
+
+    <sql id="selectSceneTriggerVo">
+        select scene_trigger_id,scene_id, status,source, id, name, value, operator, type, device_id, device_name, serial_number,product_id, product_name, job_id, cron_expression, is_advance from iot_scene_trigger
+    </sql>
+
+    <select id="selectSceneTriggerListBySceneIds" parameterType="String" resultMap="SceneTriggerResult">
+        <include refid="selectSceneTriggerVo"/>
+        where scene_id in
+        <foreach item="sceneId" collection="array" open="(" separator="," close=")">
+            #{sceneId}
+        </foreach>
+    </select>
+
+    <select id="selectSceneTriggerList" parameterType="com.frog.iot.model.TriggerParameter" resultMap="SceneTriggerResult">
+        <include refid="selectSceneTriggerVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number = #{serialNumber}</if>
+            <if test="ids != null"> and id in
+                <foreach item="id" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectSceneTriggerBySceneTriggerId" parameterType="Long" resultMap="SceneTriggerResult">
+        <include refid="selectSceneTriggerVo"/>
+        where scene_trigger_id = #{sceneTriggerId}
+    </select>
+        
+    <insert id="insertSceneTriggerList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="sceneTriggerId">
+        insert into iot_scene_trigger (scene_id,status,source,id, name, value,operator,type,device_id,device_name,serial_number,product_id, product_name,job_id,cron_expression,is_advance)
+        VALUES
+        <foreach collection ="list" item="sceneTrigger" separator =",">
+            (#{sceneTrigger.sceneId},
+             #{sceneTrigger.status},
+             #{sceneTrigger.source},
+             #{sceneTrigger.id},
+             #{sceneTrigger.name},
+             #{sceneTrigger.value},
+             #{sceneTrigger.operator},
+             #{sceneTrigger.type},
+             #{sceneTrigger.deviceId},
+             #{sceneTrigger.deviceName},
+             #{sceneTrigger.serialNumber},
+             #{sceneTrigger.productId},
+             #{sceneTrigger.productName},
+             #{sceneTrigger.jobId},
+             #{sceneTrigger.cronExpression},
+             #{sceneTrigger.isAdvance})
+        </foreach >
+    </insert>
+
+    <update id="updateSceneTrigger" parameterType="com.frog.iot.domain.SceneTrigger">
+        update iot_scene_trigger
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sceneId != null">scene_id = #{sceneId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="id != null">id = #{id},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="value != null">value = #{value},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="jobId != null">job_id = #{jobId},</if>
+            <if test="cronExpression != null">cron_expression = #{cronExpression},</if>
+            <if test="isAdvance != null">is_advance = #{isAdvance},</if>
+        </trim>
+        where scene_trigger_id = #{sceneTriggerId}
+    </update>
+
+    <delete id="deleteSceneTriggerBySceneTriggerId" parameterType="Long">
+        delete from iot_scene_trigger where scene_trigger_id = #{sceneTriggerId}
+    </delete>
+
+    <delete id="deleteSceneTriggerBySceneIds" parameterType="String">
+        delete from iot_scene_trigger where scene_id in
+        <foreach item="sceneId" collection="array" open="(" separator="," close=")">
+            #{sceneId}
+        </foreach>
+    </delete>
+</mapper>

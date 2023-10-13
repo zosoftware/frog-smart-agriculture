@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.MachineInfoMapper">
+    
+    <resultMap type="MachineInfo" id="MachineInfoResult">
+        <result property="machineId"    column="machine_id"    />
+        <result property="machineCode"    column="machine_code"    />
+        <result property="machineName"    column="machine_name"    />
+        <result property="machineTypeId"    column="machine_type_id"    />
+        <result property="measureUnit"    column="measure_unit"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectMachineInfoVo">
+        select machine_id, machine_code, machine_name, machine_type_id, measure_unit, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_machine_info
+    </sql>
+
+    <select id="selectMachineInfoList" parameterType="MachineInfo" resultMap="MachineInfoResult">
+        <include refid="selectMachineInfoVo"/>
+        <where>  
+            <if test="machineCode != null  and machineCode != ''"> and machine_code = #{machineCode}</if>
+            <if test="machineName != null  and machineName != ''"> and machine_name like concat('%', #{machineName}, '%')</if>
+            <if test="machineTypeId != null "> and machine_type_id = #{machineTypeId}</if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectMachineInfoByMachineId" parameterType="Long" resultMap="MachineInfoResult">
+        <include refid="selectMachineInfoVo"/>
+        where machine_id = #{machineId} and del_flag=0
+    </select>
+        
+    <insert id="insertMachineInfo" parameterType="MachineInfo" useGeneratedKeys="true" keyProperty="machineId">
+        insert into agriculture_machine_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">machine_code,</if>
+            <if test="machineName != null and machineName != ''">machine_name,</if>
+            <if test="machineTypeId != null">machine_type_id,</if>
+            <if test="measureUnit != null and measureUnit != ''">measure_unit,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">#{machineCode},</if>
+            <if test="machineName != null and machineName != ''">#{machineName},</if>
+            <if test="machineTypeId != null">#{machineTypeId},</if>
+            <if test="measureUnit != null and measureUnit != ''">#{measureUnit},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMachineInfo" parameterType="MachineInfo">
+        update agriculture_machine_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">machine_code = #{machineCode},</if>
+            <if test="machineName != null and machineName != ''">machine_name = #{machineName},</if>
+            <if test="machineTypeId != null">machine_type_id = #{machineTypeId},</if>
+            <if test="measureUnit != null and measureUnit != ''">measure_unit = #{measureUnit},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where machine_id = #{machineId}
+    </update>
+
+    <update id="deleteMachineInfoByMachineId" parameterType="Long">
+        update agriculture_machine_info set del_flag = 2 where machine_id = #{machineId}
+    </update>
+
+    <update id="deleteMachineInfoByMachineIds" parameterType="String">
+        update agriculture_machine_info set del_flag = 2  where machine_id in
+        <foreach item="machineId" collection="array" open="(" separator="," close=")">
+            #{machineId}
+        </foreach>
+    </update>
+</mapper>

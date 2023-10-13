@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.iot.mapper.DeviceJobLogMapper">
+    
+    <resultMap type="DeviceJobLog" id="DeviceJobLogResult">
+        <result property="jobLogId"    column="job_log_id"    />
+        <result property="jobName"    column="job_name"    />
+        <result property="jobId"    column="job_id"    />
+        <result property="jobGroup"    column="job_group"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="jobMessage"    column="job_message"    />
+        <result property="status"    column="status"    />
+        <result property="exceptionInfo"    column="exception_info"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDeviceJobLogVo">
+        select job_log_id, job_name, job_id, job_group, device_name, job_message, status, exception_info, create_time from iot_device_job_log
+    </sql>
+
+    <select id="selectDeviceJobLogList" parameterType="DeviceJobLog" resultMap="DeviceJobLogResult">
+        <include refid="selectDeviceJobLogVo"/>
+        <where>  
+            <if test="status != null  and status != ''"> and status = #{status} </if>
+        </where>
+    </select>
+    
+    <select id="selectDeviceJobLogByJobLogId" parameterType="Long" resultMap="DeviceJobLogResult">
+        <include refid="selectDeviceJobLogVo"/>
+        where job_log_id = #{jobLogId}
+    </select>
+        
+    <insert id="insertDeviceJobLog" parameterType="DeviceJobLog" useGeneratedKeys="true" keyProperty="jobLogId">
+        insert into iot_device_job_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jobName != null">job_name,</if>
+            <if test="jobId != null">job_id,</if>
+            <if test="jobGroup != null">job_group,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="jobMessage != null">job_message,</if>
+            <if test="status != null">status,</if>
+            <if test="exceptionInfo != null">exception_info,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jobName != null">#{jobName},</if>
+            <if test="jobId != null">#{jobId},</if>
+            <if test="jobGroup != null">#{jobGroup},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="jobMessage != null">#{jobMessage},</if>
+            <if test="status != null">#{status},</if>
+            <if test="exceptionInfo != null">#{exceptionInfo},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+
+
+</mapper>

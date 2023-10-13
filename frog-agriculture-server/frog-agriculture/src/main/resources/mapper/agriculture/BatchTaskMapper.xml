@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.BatchTaskMapper">
+
+    <resultMap type="BatchTask" id="BatchTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="planStart"    column="plan_start"    />
+        <result property="planFinish"    column="plan_finish"    />
+        <result property="actualStart"    column="actual_start"    />
+        <result property="actualFinish"    column="actual_finish"    />
+        <result property="taskDetail"    column="task_detail"    />
+        <result property="taskImages"    column="task_images"    />
+        <result property="taskVideos"    column="task_videos"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="batchHead"  column="batch_head"/>
+        <result property="userName"  column="user_name"/>
+        <result property="landId"  column="land_id"/>
+        <result property="landName"  column="land_name"/>
+        <result property="batchName"  column="batch_name"/>
+        <result property="taskHead"  column="task_head"/>
+    </resultMap>
+
+    <sql id="selectBatchTaskVo">
+        select task_id, batch_id, task_name, plan_start, plan_finish, actual_start, actual_finish, task_detail, task_images, task_videos, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_batch_task
+    </sql>
+
+    <select id="selectBatchTaskList" parameterType="BatchTask" resultMap="BatchTaskResult">
+        SELECT t.* ,b.batch_name FROM agriculture_batch_task t LEFT JOIN agriculture_crop_batch b on t.batch_id = b.batch_id
+        <where>
+            <if test="batchId != null "> and t.batch_id = #{batchId}</if>
+            <if test="taskName != null  and taskName != ''"> and t.task_name like concat('%', #{taskName}, '%')</if>
+            <if test="params.planStartStart != null and params.planStartEnd != null"> and DATE_FORMAT(plan_start,'%Y-%m-%d') Between '${params.planStartStart}' AND '${params.planStartEnd}' </if>
+            <if test="planFinish != null "> and t.plan_finish = #{planFinish}</if>
+            <if test="actualStart != null "> and t.actual_start = #{actualStart}</if>
+            <if test="actualFinish != null "> and t.actual_finish = #{actualFinish}</if>
+            <if test="taskDetail != null  and taskDetail != ''"> and t.task_detail = #{taskDetail}</if>
+            <if test="taskImages != null  and taskImages != ''"> and t.task_images = #{taskImages}</if>
+            <if test="taskVideos != null  and taskVideos != ''"> and t.task_videos = #{taskVideos}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+            <if test="orderNum != null "> and t.order_num = #{orderNum}</if>
+            and t.del_flag = 0
+        </where>
+    </select>
+
+    <select id="selectBatchTaskByTaskId" parameterType="Long" resultMap="BatchTaskResult">
+        SELECT
+            r.*,
+            u.user_name,
+            l.land_name,
+            cb.batch_name
+        FROM
+            ( SELECT bt.*, cb.batch_head,cb.land_id FROM agriculture_batch_task bt LEFT JOIN agriculture_crop_batch cb ON bt.batch_id = cb.batch_id ) r
+                LEFT JOIN sys_user u ON r.batch_head = u.user_id
+                LEFT JOIN agriculture_land l ON r.land_id = l.land_id
+                LEFT JOIN agriculture_crop_batch cb ON r.batch_id = cb.batch_id
+        where r.task_id = #{taskId} and r.del_flag=0
+    </select>
+
+    <select id="selectFinishTask"  resultType="java.util.HashMap">
+        SELECT COUNT(task_id)AS 'num' FROM agriculture_batch_task WHERE batch_id= #{batchId} AND `status` IN(0,1,2) AND del_flag =0
+    </select>
+
+    <insert id="insertBatchTask" parameterType="BatchTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into agriculture_batch_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">batch_id,</if>
+            <if test="taskHead != null">task_head,</if>
+            <if test="taskName != null and taskName != ''">task_name,</if>
+            <if test="planStart != null">plan_start,</if>
+            <if test="planFinish != null">plan_finish,</if>
+            <if test="actualStart != null">actual_start,</if>
+            <if test="actualFinish != null">actual_finish,</if>
+            <if test="taskDetail != null and taskDetail != ''">task_detail,</if>
+            <if test="taskImages != null">task_images,</if>
+            <if test="taskVideos != null">task_videos,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">#{batchId},</if>
+            <if test="taskHead != null">#{taskHead},</if>
+            <if test="taskName != null and taskName != ''">#{taskName},</if>
+            <if test="planStart != null">#{planStart},</if>
+            <if test="planFinish != null">#{planFinish},</if>
+            <if test="actualStart != null">#{actualStart},</if>
+            <if test="actualFinish != null">#{actualFinish},</if>
+            <if test="taskDetail != null and taskDetail != ''">#{taskDetail},</if>
+            <if test="taskImages != null">#{taskImages},</if>
+            <if test="taskVideos != null">#{taskVideos},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBatchTask" parameterType="BatchTask">
+        update agriculture_batch_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskHead != null">task_head = #{taskHead},</if>
+            <if test="taskName != null and taskName != ''">task_name = #{taskName},</if>
+            <if test="planStart != null">plan_start = #{planStart},</if>
+            <if test="planFinish != null">plan_finish = #{planFinish},</if>
+            <if test="actualStart != null">actual_start = #{actualStart},</if>
+            <if test="actualFinish != null">actual_finish = #{actualFinish},</if>
+            <if test="taskDetail != null and taskDetail != ''">task_detail = #{taskDetail},</if>
+            <if test="taskImages != null">task_images = #{taskImages},</if>
+            <if test="taskVideos != null">task_videos = #{taskVideos},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <update id="deleteBatchTaskByTaskId" parameterType="Long">
+        update agriculture_batch_task set del_flag = 2 where task_id = #{taskId}
+    </update>
+
+    <update id="deleteBatchTaskByTaskIds" parameterType="String">
+        update agriculture_batch_task set del_flag = 2  where task_id in
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </update>
+</mapper>

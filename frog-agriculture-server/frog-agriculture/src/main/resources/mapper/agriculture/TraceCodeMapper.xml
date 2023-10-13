@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.TraceCodeMapper">
+    
+    <resultMap type="TraceCode" id="TraceCodeResult">
+        <result property="codeId"    column="code_id"    />
+        <result property="versionId"    column="version_id"    />
+        <result property="sellproId"    column="sellpro_id"    />
+        <result property="traceCode"    column="trace_code"    />
+        <result property="traceUrl"    column="trace_url"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectTraceCodeVo">
+        select code_id, version_id,sellpro_id, trace_code, trace_url, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_trace_code
+    </sql>
+
+    <select id="selectTraceCodeList" parameterType="TraceCode" resultMap="TraceCodeResult">
+        <include refid="selectTraceCodeVo"/>
+        <where>  
+            <if test="traceCode != null  and traceCode != ''"> and trace_code = #{traceCode} </if>
+            <if test="versionId != null  and versionId != ''"> and version_id = #{versionId} </if>
+            <if test="sellproId != null  and sellproId != ''"> and sellpro_id = #{sellproId} </if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectTraceCodeByCodeId" parameterType="Long" resultMap="TraceCodeResult">
+        <include refid="selectTraceCodeVo"/>
+        where code_id = #{codeId} and del_flag=0
+    </select>
+        
+    <insert id="insertTraceCode" parameterType="TraceCode" useGeneratedKeys="true" keyProperty="codeId">
+        insert into agriculture_trace_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="versionId != null">version_id,</if>
+            <if test="sellproId != null">sellpro_id,</if>
+            <if test="traceCode != null and traceCode != ''">trace_code,</if>
+            <if test="traceUrl != null and traceUrl != ''">trace_url,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="versionId != null">#{versionId},</if>
+            <if test="sellproId != null">#{sellproId},</if>
+            <if test="traceCode != null and traceCode != ''">#{traceCode},</if>
+            <if test="traceUrl != null and traceUrl != ''">#{traceUrl},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTraceCode" parameterType="TraceCode">
+        update agriculture_trace_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="versionId != null">version_id = #{versionId},</if>
+            <if test="traceCode != null and traceCode != ''">trace_code = #{traceCode},</if>
+            <if test="traceUrl != null and traceUrl != ''">trace_url = #{traceUrl},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where code_id = #{codeId}
+    </update>
+
+    <update id="deleteTraceCodeByCodeId" parameterType="Long">
+        update agriculture_trace_code set del_flag = 2 where code_id = #{codeId}
+    </update>
+
+    <update id="deleteTraceCodeByCodeIds" parameterType="String">
+        update agriculture_trace_code set del_flag = 2  where code_id in
+        <foreach item="codeId" collection="array" open="(" separator="," close=")">
+            #{codeId}
+        </foreach>
+    </update>
+</mapper>

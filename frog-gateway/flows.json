@@ -1,0 +1,348 @@
+[
+    {
+        "id": "1eb8ab1644af609c",
+        "type": "tab",
+        "label": "属性上报和实时监测指令订阅执行",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b774cd650cc9af7c",
+        "type": "mqtt out",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "topic": "/99/CA00081A5514AB0/property/post",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5021ec747d32913d",
+        "x": 1750,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b0ea1b86ac32c775",
+        "type": "function",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "func": "var fx = ['南风','北风','西风','东风'];\nmsg.payload = [{\n\t\"id\": \"dqyl\",\n    \"name\":\"大气压力\",\n\t\"value\": Math.round(Math.random()*5+5),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"jyl\",\n    \"name\":\"降雨量\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"eyhtnd\",\n    \"name\":\"二氧化碳浓度\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"pm10\",\n    \"name\":\"PM10\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"pm25\",\n    \"name\":\"PM2.5\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"gzd\",\n    \"name\":\"光照度\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"kqsd\",\n    \"name\":\"空气湿度\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"zfs\",\n    \"name\":\"总辐射\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"ghyxfs\",\n    \"name\":\"光合有效辐射\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"rzss\",\n    \"name\":\"日照时数\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"kqwd\",\n    \"name\":\"空气温度\",\n\t\"value\": Math.round(Math.random()*5+20),\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"fx\",\n    \"name\":\"风向\",\n\t\"value\": fx[Math.round(Math.random()*4)],\n    \"remark\":\"设备上报\"\n},{\n\t\"id\": \"fs\",\n    \"name\":\"风速\",\n\t\"value\": Math.round(Math.random()*5+100),\n    \"remark\":\"设备上报\"\n}];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1470,
+        "y": 300,
+        "wires": [
+            [
+                "b774cd650cc9af7c",
+                "4c08771ca129da56"
+            ]
+        ]
+    },
+    {
+        "id": "29a36ca0719e7703",
+        "type": "modbus_in",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "outputs": 1,
+        "modbusOut": "modbus out",
+        "func": "3",
+        "uid": "1",
+        "regAddr": "40001",
+        "regNum": "1",
+        "nodeID": "9038fbeb4de429fa",
+        "props": [
+            {
+                "addr": 40001,
+                "num": 1,
+                "dataType": "u16AB",
+                "byteAddr": 0
+            }
+        ],
+        "x": 1290,
+        "y": 300,
+        "wires": [
+            [
+                "b0ea1b86ac32c775"
+            ]
+        ]
+    },
+    {
+        "id": "e6ae92d4695a1bd4",
+        "type": "serial port",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "serial": "a369a4bc6e76f2cb",
+        "x": 1130,
+        "y": 300,
+        "wires": [
+            [
+                "29a36ca0719e7703"
+            ]
+        ]
+    },
+    {
+        "id": "8aa575ad8b8c5410",
+        "type": "modbus_out",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "uid": "1",
+        "func": "3",
+        "regAddr": "40001",
+        "regNum": "1",
+        "props": [
+            {
+                "addr": 40001,
+                "num": 1,
+                "dataType": "u16AB",
+                "byteAddr": 0
+            }
+        ],
+        "x": 950,
+        "y": 300,
+        "wires": [
+            [
+                "e6ae92d4695a1bd4"
+            ]
+        ]
+    },
+    {
+        "id": "f978a3b752cd91d2",
+        "type": "inject",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1800",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 760,
+        "y": 200,
+        "wires": [
+            [
+                "8aa575ad8b8c5410"
+            ]
+        ]
+    },
+    {
+        "id": "3a6d1f64d6a5f518",
+        "type": "trigger",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-10",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 600,
+        "y": 300,
+        "wires": [
+            [
+                "8aa575ad8b8c5410"
+            ]
+        ]
+    },
+    {
+        "id": "eeba4f103fd2134e",
+        "type": "function",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "func": "if(msg.payload.interval !=0){\n    msg.delay=msg.payload.interval;\n}else{\n    msg.reset = \"1\";\n}\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 300,
+        "wires": [
+            [
+                "3a6d1f64d6a5f518"
+            ]
+        ]
+    },
+    {
+        "id": "a3c3ad6e5cd83fbf",
+        "type": "mqtt in",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "topic": "/99/CA00081A5514AB0/monitor/get",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "5021ec747d32913d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "eeba4f103fd2134e",
+                "7791479e14f4c504"
+            ]
+        ],
+        "info": "订阅监测指令"
+    },
+    {
+        "id": "4c08771ca129da56",
+        "type": "mqtt out",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "topic": "/99/CA00081A5514AB0/property/post",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "948f88aaf7d0da86",
+        "x": 1750,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "591bc3cb7122b147",
+        "type": "mqtt in",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "topic": "/99/CA00081A5514AB0/monitor/get",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "948f88aaf7d0da86",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 240,
+        "wires": [
+            [
+                "eeba4f103fd2134e",
+                "df6b40acb976fba2"
+            ]
+        ],
+        "info": "订阅监测指令"
+    },
+    {
+        "id": "df6b40acb976fba2",
+        "type": "debug",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "7791479e14f4c504",
+        "type": "debug",
+        "z": "1eb8ab1644af609c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "5021ec747d32913d",
+        "type": "mqtt-broker",
+        "name": "气象站-局域网",
+        "broker": "192.168.3.237",
+        "port": "1883",
+        "clientid": "S&CA00081A5514AB0&99&1",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "a369a4bc6e76f2cb",
+        "type": "serial config",
+        "name": "485-1",
+        "serialport": "/dev/ttyS3",
+        "baudrate": "4800",
+        "databits": "8",
+        "stopbits": "1",
+        "parity": "none",
+        "timeout": "50",
+        "reqtimeout": "1000"
+    },
+    {
+        "id": "948f88aaf7d0da86",
+        "type": "mqtt-broker",
+        "name": "气象站-线上",
+        "broker": "47.117.144.251",
+        "port": "1883",
+        "clientid": "S&CA00081A5514AB0&99&1",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]

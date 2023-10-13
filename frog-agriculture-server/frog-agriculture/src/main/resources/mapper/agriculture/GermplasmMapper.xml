@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.GermplasmMapper">
+
+    <resultMap type="Germplasm" id="GermplasmResult">
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="cropEnName"    column="crop_en_name"    />
+        <result property="germplasmName"    column="germplasm_name"    />
+        <result property="germplasmEnName"    column="germplasm_en_name"    />
+        <result property="germplasmImg"    column="germplasm_img"    />
+        <result property="germplasmDes"    column="germplasm_des"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectGermplasmVo">
+        select germplasm_id, crop_name, crop_en_name, germplasm_name, germplasm_en_name, germplasm_img, germplasm_des, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_germplasm
+    </sql>
+
+    <select id="selectGermplasmList" parameterType="Germplasm" resultMap="GermplasmResult">
+        <include refid="selectGermplasmVo"/>
+        <where>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="germplasmName != null  and germplasmName != ''"> and germplasm_name like concat('%', #{germplasmName}, '%')</if>
+            and del_flag = 0
+        </where>
+    </select>
+
+    <select id="selectGermplasmByGermplasmId" parameterType="Long" resultMap="GermplasmResult">
+        <include refid="selectGermplasmVo"/>
+        where germplasm_id = #{germplasmId} and del_flag=0
+    </select>
+
+    <insert id="insertGermplasm" parameterType="Germplasm" useGeneratedKeys="true" keyProperty="germplasmId">
+        insert into agriculture_germplasm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cropName != null and cropName != ''">crop_name,</if>
+            <if test="cropEnName != null and cropEnName != ''">crop_en_name,</if>
+            <if test="germplasmName != null and germplasmName != ''">germplasm_name,</if>
+            <if test="germplasmEnName != null and germplasmEnName != ''">germplasm_en_name,</if>
+            <if test="germplasmImg != null and germplasmImg != ''">germplasm_img,</if>
+            <if test="germplasmDes != null and germplasmDes != ''">germplasm_des,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cropName != null and cropName != ''">#{cropName},</if>
+            <if test="cropEnName != null and cropEnName != ''">#{cropEnName},</if>
+            <if test="germplasmName != null and germplasmName != ''">#{germplasmName},</if>
+            <if test="germplasmEnName != null and germplasmEnName != ''">#{germplasmEnName},</if>
+            <if test="germplasmImg != null and germplasmImg != ''">#{germplasmImg},</if>
+            <if test="germplasmDes != null and germplasmDes != ''">#{germplasmDes},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGermplasm" parameterType="Germplasm">
+        update agriculture_germplasm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cropName != null and cropName != ''">crop_name = #{cropName},</if>
+            <if test="cropEnName != null and cropEnName != ''">crop_en_name = #{cropEnName},</if>
+            <if test="germplasmName != null and germplasmName != ''">germplasm_name = #{germplasmName},</if>
+            <if test="germplasmEnName != null and germplasmEnName != ''">germplasm_en_name = #{germplasmEnName},</if>
+            <if test="germplasmImg != null and germplasmImg != ''">germplasm_img = #{germplasmImg},</if>
+            <if test="germplasmDes != null and germplasmDes != ''">germplasm_des = #{germplasmDes},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where germplasm_id = #{germplasmId}
+    </update>
+
+    <update id="deleteGermplasmByGermplasmId" parameterType="Long">
+        update agriculture_germplasm set del_flag = 2 where germplasm_id = #{germplasmId}
+    </update>
+
+    <update id="deleteGermplasmByGermplasmIds" parameterType="String">
+        update agriculture_germplasm set del_flag = 2  where germplasm_id in
+        <foreach item="germplasmId" collection="array" open="(" separator="," close=")">
+            #{germplasmId}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.PlantMethodMapper">
+    
+    <resultMap type="PlantMethod" id="PlantMethodResult">
+        <result property="methodId"    column="method_id"    />
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="methodName"    column="method_name"    />
+        <result property="methodImg"    column="method_img"    />
+        <result property="methodDes"    column="method_des"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectPlantMethodVo">
+        select method_id, germplasm_id, method_name, method_img, method_des, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_plant_method
+    </sql>
+
+    <select id="selectPlantMethodList" parameterType="PlantMethod" resultMap="PlantMethodResult">
+        <include refid="selectPlantMethodVo"/>
+        <where>  
+            <if test="germplasmId != null "> and germplasm_id = #{germplasmId}</if>
+            <if test="methodName != null  and methodName != ''"> and method_name like concat('%', #{methodName}, '%')</if>
+            <if test="methodImg != null  and methodImg != ''"> and method_img = #{methodImg}</if>
+            <if test="methodDes != null  and methodDes != ''"> and method_des = #{methodDes}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlantMethodByMethodId" parameterType="Long" resultMap="PlantMethodResult">
+        <include refid="selectPlantMethodVo"/>
+        where method_id = #{methodId}
+    </select>
+        
+    <insert id="insertPlantMethod" parameterType="PlantMethod" useGeneratedKeys="true" keyProperty="methodId">
+        insert into agriculture_plant_method
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id,</if>
+            <if test="methodName != null and methodName != ''">method_name,</if>
+            <if test="methodImg != null and methodImg != ''">method_img,</if>
+            <if test="methodDes != null and methodDes != ''">method_des,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">#{germplasmId},</if>
+            <if test="methodName != null and methodName != ''">#{methodName},</if>
+            <if test="methodImg != null and methodImg != ''">#{methodImg},</if>
+            <if test="methodDes != null and methodDes != ''">#{methodDes},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlantMethod" parameterType="PlantMethod">
+        update agriculture_plant_method
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id = #{germplasmId},</if>
+            <if test="methodName != null and methodName != ''">method_name = #{methodName},</if>
+            <if test="methodImg != null and methodImg != ''">method_img = #{methodImg},</if>
+            <if test="methodDes != null and methodDes != ''">method_des = #{methodDes},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where method_id = #{methodId}
+    </update>
+
+    <delete id="deletePlantMethodByMethodId" parameterType="Long">
+        delete from agriculture_plant_method where method_id = #{methodId}
+    </delete>
+
+    <delete id="deletePlantMethodByMethodIds" parameterType="String">
+        delete from agriculture_plant_method where method_id in 
+        <foreach item="methodId" collection="array" open="(" separator="," close=")">
+            #{methodId}
+        </foreach>
+    </delete>
+</mapper>

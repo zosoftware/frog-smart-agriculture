@@ -1,0 +1,441 @@
+@import '@/assets/styles/element-variables.scss'; // ruoyi css
+
+
+
+/** flex */
+  .flex {
+    display: flex;
+  }
+  .inline-flex{
+      display: inline-flex;
+  }
+  .fdc {
+    flex-direction: column;
+  }
+  .jcc {
+    justify-content: center;
+  }
+  .aic {
+    align-items: center;
+  }
+  .jcsa {
+    justify-content: space-around;
+  }
+  .jcsb{
+    justify-content: space-between;
+  }
+  .jcc {
+    justify-content:center;
+  }
+  .frr{
+      flex-wrap: wrap;
+  }
+  .flex1 {
+    flex: 1;
+  }
+  .flex00a{
+      flex: 0 0 auto;
+  }
+
+
+//height
+  .hb{
+      height: calc(100vh - 84px);
+  }
+  @for $i from 0 through 2000{
+    $m:$i * 1px;
+
+    .hbm#{$i}{
+       height:calc(100vh - 84px - #{$m}) !important;
+    }
+  }
+
+  @for $i from 0 through 100{
+      .h#{$i} {
+        height: round(percentage($i/100))  !important;
+      }
+}
+.height-auto{
+    height: auto !important;
+}
+  @for $i from 0 through 2000{
+    .height-#{$i}{
+       height:(1px * $i) !important
+    }
+}
+
+//width
+@for $i from 0 through 100{
+    .w#{$i} {
+      width: round(percentage($i/100))  !important;
+    }
+}
+@for $i from 0 through 2000{
+  .width-#{$i}{
+     width:(1px * $i) !important
+  }
+}
+.width-auto{
+    width: auto !important;
+}
+@for $i from 0 through 100{
+    .width-#{$i}vh{
+       width:(1vh * $i) !important
+    }
+}
+//margin
+  @for $i from 0 through 100{
+    .margin-#{$i}{
+        margin:(1px * $i) !important
+    }
+    .margin-tb-#{$i}{
+        margin:(1px * $i) 0 !important
+    }
+    .margin-lr-#{$i}{
+        margin:0 (1px * $i) !important
+    }
+    .margin-left-#{$i}{
+        margin-left:(1px * $i) !important
+    }
+    .margin-right-#{$i}{
+        margin-right:(1px * $i) !important
+    }
+    .margin-top-#{$i}{
+        margin-top:(1px * $i) !important
+    }
+    .margin-bottom-#{$i}{
+        margin-bottom:(1px * $i) !important
+    }
+ }
+
+//padding
+  @for $i from 0 through 100{
+    .padding-#{$i}{
+        padding:(1px * $i) !important
+    }
+    .padding-tb-#{$i}{
+        padding:(1px * $i) 0 !important
+    }
+    .padding-lr-#{$i}{
+        padding:0 (1px * $i) !important
+    }
+    .padding-left-#{$i}{
+        padding-left:(1px * $i) !important
+    }
+    .padding-right-#{$i}{
+        padding-right:(1px * $i) !important
+    }
+    .padding-top-#{$i}{
+        padding-top:(1px * $i) !important
+    }
+    .padding-bottom-#{$i}{
+        padding-bottom:(1px * $i) !important
+    }
+ }
+
+//font
+  .font-weight-bold{
+      font-weight:bold;
+  }
+  @for $i from 100 through 900{
+    .font-weight-#{$i}{
+        font-weight:$i !important
+    }
+}
+  @for $i from 0 through 100{
+      .font-size-#{$i}{
+          font-size:(1px * $i) !important
+      }
+  }
+  .font-color-primary{
+    color:$--color-primary !important;
+  }
+  .font-color-primary-hover:hover{
+    color:$--color-primary !important;
+    cursor: pointer;
+  }
+  .font-color-success{
+    color:$--color-success !important;
+  }
+  .font-color-warning{
+    color:$--color-warning !important;
+  }
+  .font-color-danger{
+    color:$--color-danger !important;
+  }
+  //基础黑色
+  .font-color-000{
+      color:#000;
+  }
+  //基础白色
+  .font-color-fff{
+    color:#fff;
+  }
+  //主要文字
+  .font-color-l1{
+      color:#303133;
+  }
+  .font-color-l2{
+      color:#606266;
+  }
+  .font-color-l3{
+    color:#909399
+  }
+  .font-color-l4{
+      color:#C0C4CC;
+  }
+  .font-color-999{
+      color:#999;
+  }
+
+  //bgcolor
+  .background-color-primary{
+      background-color:$--color-primary;
+  }
+  .background-color-success{
+    background-color:$--color-success;
+  }
+  .background-color-warning{
+    background-color:$--color-warning;
+  }
+  .background-color-danger{
+    background-color:$--color-danger;
+  }
+  .background-color-fff{
+      background-color: #fff;
+  }
+  .background-color-000{
+      background-color: #000;
+  }
+  .background-color-f3f3f3{
+      background-color: #f3f3f3;
+  }
+  .background-color-transparent{
+      background-color: transparent !important;
+  }
+  .background-color-l1{
+    background-color:#303133;
+}
+.background-color-l2{
+    background-color:#606266;
+}
+.background-color-l3{
+    background-color:#909399
+}
+.background-color-l4{
+    background-color:#C0C4CC;
+}
+.background-color-999{
+    background-color:#999;
+}
+
+  //cursor
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+
+  //浮动
+  .float-left{
+    float:left;
+  }
+  .float-right{
+    float:right;
+  }
+  //overfolw
+  .overflow-auto{
+    overflow: auto;
+  }
+
+  //line-height
+  .line-height-normal{
+    line-height: normal !important;
+  }
+  @for $i from 0 through 100{
+    .line-height-#{$i}{
+        line-height:(1px * $i) !important
+  }
+}
+
+//display
+.display-block{
+  display: block !important;
+}
+.display-inline{
+    display: inline !important;
+  }
+.display-inline-block{
+  display: inline-block !important;
+}
+
+//border-radius
+@for $i from 0 through 100{
+  .border-radius-#{$i}{
+      border-radius:(1px * $i) !important
+  }
+  .border-top-radius-#{$i}{
+    border-top-left-radius:(1px * $i) !important;
+    border-top-right-radius:(1px * $i) !important;
+  }
+  .border-bottom-radius-#{$i}{
+    border-bottom-left-radius:(1px * $i) !important;
+    border-bottom-right-radius:(1px * $i) !important
+  }
+  .border-left-radius-#{$i}{
+    border-top-left-radius:(1px * $i) !important;
+    border-bottom-left-radius:(1px * $i) !important;
+  }
+  .border-right-radius-#{$i}{
+    border-top-right-radius:(1px * $i) !important;
+    border-bottom-right-radius:(1px * $i) !important;
+
+  }
+  .border-top-left-radius-#{$i}{
+    border-top-left-radius:(1px * $i) !important
+}
+.border-top-right-radius-#{$i}{
+    border-top-right-radius:(1px * $i) !important
+}
+.border-bottom-left-radius-#{$i}{
+    border-bottom-left-radius:(1px * $i) !important
+}
+.border-bottom-right-radius-#{$i}{
+    border-bottom-right-radius:(1px * $i) !important
+}
+}
+
+//border
+
+.border-none{
+    border:none;
+}
+.border-d8d8d8{
+    border:1px solid #d8d8d8;
+}
+.border-left-d8d8d8{
+    border-left:1px solid #d8d8d8;
+}
+.border-bottom-d8d8d8{
+    border-bottom:1px solid #d8d8d8;
+}
+.border-right-d8d8d8{
+    border-right:1px solid #d8d8d8;
+}
+.border-right-d8d8d8{
+    border-bottom:1px solid #d8d8d8;
+}
+.border-eee{
+    border:1px solid #eee;
+}
+.border-left-eee{
+    border-left:1px solid #eee;
+}
+.border-bottom-eee{
+    border-bottom:1px solid #eee;
+}
+.border-right-eee{
+    border-right:1px solid #eee;
+}
+.border-right-eee{
+    border-bottom:1px solid #eee;
+}
+.border-l1{
+    border:1px solid #303133;
+}
+.border-left-l1{
+    border-left:1px solid #303133;
+}
+.border-bottom-l1{
+    border-bottom:1px solid #303133;
+}
+.border-right-l1{
+    border-right:1px solid #303133;
+}
+.border-right-l1{
+    border-bottom:1px solid #303133;
+}
+.border-l2{
+    border:1px solid #606266;
+}
+.border-left-l2{
+    border-left:1px solid #606266;
+}
+.border-bottom-l2{
+    border-bottom:1px solid #606266;
+}
+.border-right-l2{
+    border-right:1px solid #606266;
+}
+.border-right-l2{
+    border-bottom:1px solid #606266;
+}
+.border-l3{
+    border:1px solid #909399;
+}
+.border-left-l3{
+    border-left:1px solid #909399;
+}
+.border-bottom-l3{
+    border-bottom:1px solid #909399;
+}
+.border-right-l3{
+    border-right:1px solid #909399;
+}
+.border-right-l3{
+    border-bottom:1px solid #909399;
+}
+.border-l4{
+    border:1px solid #C0C4CC;
+}
+.border-left-l4{
+    border-left:1px solid #C0C4CC;
+}
+.border-bottom-l4{
+    border-bottom:1px solid #C0C4CC;
+}
+.border-right-l4{
+    border-right:1px solid #C0C4CC;
+}
+.border-right-l4{
+    border-bottom:1px solid #C0C4CC;
+}
+
+//闪烁
+/* 定义闪烁效果 */
+@keyframes blink {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  .blink {
+    animation: blink 1s linear infinite;
+  }
+
+//box-sizing
+.box-sizing-border-box{
+    box-sizing: border-box;
+}
+.box-sizing-border-box{
+    box-sizing:content-box
+}
+//position
+.position-absolute{
+    position: absolute !important;
+}
+@for $i from 0 through 2000{
+    .bottom-#{$i}{
+        bottom:(1px * $i) !important
+    }
+    .top-#{$i}{
+        top:(1px * $i) !important
+    }
+    .left-#{$i}{
+        left:(1px * $i) !important
+    }
+    .right-#{$i}{
+        right:(1px * $i) !important
+    }
+}

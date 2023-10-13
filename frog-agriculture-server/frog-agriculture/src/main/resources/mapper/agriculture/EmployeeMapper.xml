@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.EmployeeMapper">
+
+    <resultMap type="Employee" id="EmployeeResult">
+        <result property="employeeId"    column="employee_id"    />
+        <result property="employeeCode"    column="employee_code"    />
+        <result property="employeeName"    column="employee_name"    />
+        <result property="employeeType"    column="employee_type"    />
+        <result property="employeeTel"    column="employee_tel"    />
+        <result property="employeeSex"    column="employee_sex"    />
+        <result property="employeeAddress"    column="employee_address"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectEmployeeVo">
+        select employee_id, employee_code, employee_name, employee_type, employee_tel, employee_sex, employee_address, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_employee
+    </sql>
+
+    <select id="selectEmployeeList" parameterType="Employee" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        <where>
+            <if test="employeeCode != null  and employeeCode != ''"> and employee_code like concat('%', #{employeeCode}, '%')</if>
+            <if test="employeeName != null  and employeeName != ''"> and employee_name like concat('%', #{employeeName}, '%')</if>
+            <if test="employeeTel != null  and employeeTel != ''"> and employee_tel like concat('%', #{employeeTel}, '%')</if>
+            and del_flag = 0
+        </where>
+    </select>
+
+    <select id="selectEmployeeByEmployeeId" parameterType="Long" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        where employee_id = #{employeeId} and del_flag=0
+    </select>
+
+    <insert id="insertEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="employeeId">
+        insert into agriculture_employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeeCode != null and employeeCode != ''">employee_code,</if>
+            <if test="employeeName != null and employeeName != ''">employee_name,</if>
+            <if test="employeeType != null and employeeType != ''">employee_type,</if>
+            <if test="employeeTel != null and employeeTel != ''">employee_tel,</if>
+            <if test="employeeSex != null and employeeSex != ''">employee_sex,</if>
+            <if test="employeeAddress != null and employeeAddress != ''">employee_address,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="employeeCode != null and employeeCode != ''">#{employeeCode},</if>
+            <if test="employeeName != null and employeeName != ''">#{employeeName},</if>
+            <if test="employeeType != null and employeeType != ''">#{employeeType},</if>
+            <if test="employeeTel != null and employeeTel != ''">#{employeeTel},</if>
+            <if test="employeeSex != null and employeeSex != ''">#{employeeSex},</if>
+            <if test="employeeAddress != null and employeeAddress != ''">#{employeeAddress},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEmployee" parameterType="Employee">
+        update agriculture_employee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="employeeCode != null and employeeCode != ''">employee_code = #{employeeCode},</if>
+            <if test="employeeName != null and employeeName != ''">employee_name = #{employeeName},</if>
+            <if test="employeeType != null and employeeType != ''">employee_type = #{employeeType},</if>
+            <if test="employeeTel != null and employeeTel != ''">employee_tel = #{employeeTel},</if>
+            <if test="employeeSex != null and employeeSex != ''">employee_sex = #{employeeSex},</if>
+            <if test="employeeAddress != null and employeeAddress != ''">employee_address = #{employeeAddress},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where employee_id = #{employeeId}
+    </update>
+
+    <update id="deleteEmployeeByEmployeeId" parameterType="Long">
+        update agriculture_employee set del_flag = 2 where employee_id = #{employeeId}
+    </update>
+
+    <update id="deleteEmployeeByEmployeeIds" parameterType="String">
+        update agriculture_employee set del_flag = 2  where employee_id in
+        <foreach item="employeeId" collection="array" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+    </update>
+</mapper>

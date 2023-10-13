@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.StandardJobMapper">
+    
+    <resultMap type="StandardJob" id="StandardJobResult">
+        <result property="jobId"    column="job_id"    />
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="jobName"    column="job_name"    />
+        <result property="cycleUnit"    column="cycle_unit"    />
+        <result property="jobStart"    column="job_start"    />
+        <result property="jobFinish"    column="job_finish"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectStandardJobVo">
+        select job_id, germplasm_id, job_name, cycle_unit, job_start, job_finish, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_standard_job
+    </sql>
+
+    <select id="selectStandardJobList" parameterType="StandardJob" resultMap="StandardJobResult">
+        <include refid="selectStandardJobVo"/>
+        <where>  
+            <if test="germplasmId != null "> and germplasm_id = #{germplasmId}</if>
+            <if test="jobName != null  and jobName != ''"> and job_name like concat('%', #{jobName}, '%')</if>
+            <if test="cycleUnit != null  and cycleUnit != ''"> and cycle_unit = #{cycleUnit}</if>
+            <if test="jobStart != null "> and job_start = #{jobStart}</if>
+            <if test="jobFinish != null "> and job_finish = #{jobFinish}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectStandardJobByJobId" parameterType="Long" resultMap="StandardJobResult">
+        <include refid="selectStandardJobVo"/>
+        where job_id = #{jobId} and del_flag=0
+    </select>
+        
+    <insert id="insertStandardJob" parameterType="StandardJob" useGeneratedKeys="true" keyProperty="jobId">
+        insert into agriculture_standard_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id,</if>
+            <if test="jobName != null and jobName != ''">job_name,</if>
+            <if test="cycleUnit != null and cycleUnit != ''">cycle_unit,</if>
+            <if test="jobStart != null">job_start,</if>
+            <if test="jobFinish != null">job_finish,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">#{germplasmId},</if>
+            <if test="jobName != null and jobName != ''">#{jobName},</if>
+            <if test="cycleUnit != null and cycleUnit != ''">#{cycleUnit},</if>
+            <if test="jobStart != null">#{jobStart},</if>
+            <if test="jobFinish != null">#{jobFinish},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStandardJob" parameterType="StandardJob">
+        update agriculture_standard_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id = #{germplasmId},</if>
+            <if test="jobName != null and jobName != ''">job_name = #{jobName},</if>
+            <if test="cycleUnit != null and cycleUnit != ''">cycle_unit = #{cycleUnit},</if>
+            <if test="jobStart != null">job_start = #{jobStart},</if>
+            <if test="jobFinish != null">job_finish = #{jobFinish},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where job_id = #{jobId}
+    </update>
+
+    <update id="deleteStandardJobByJobId" parameterType="Long">
+        update agriculture_standard_job set del_flag = 2 where job_id = #{jobId}
+    </update>
+
+    <update id="deleteStandardJobByJobIds" parameterType="String">
+        update agriculture_standard_job set del_flag = 2  where job_id in
+        <foreach item="jobId" collection="array" open="(" separator="," close=")">
+            #{jobId}
+        </foreach>
+    </update>
+</mapper>

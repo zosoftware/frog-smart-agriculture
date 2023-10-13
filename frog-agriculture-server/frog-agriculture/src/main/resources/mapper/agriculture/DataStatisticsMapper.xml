@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.DataStatisticsMapper">
+    <select id="selectBaseInfo" resultType="java.util.HashMap">
+        SELECT
+            areaCount,
+            germplasmCount,
+            diCount,
+            employeeCount,
+            batchCount,
+            pengCount
+        FROM
+            ( SELECT base_area AS 'areaCount' FROM agriculture_baseinfo WHERE del_flag = 0 ) base
+                JOIN ( SELECT COUNT(*) AS 'germplasmCount' FROM agriculture_germplasm WHERE del_flag = 0 ) germplasm
+                JOIN ( SELECT COUNT(*) AS 'diCount' FROM agriculture_land WHERE land_type = 0 AND del_flag = 0 ) di
+                JOIN ( SELECT COUNT(*) AS 'employeeCount' FROM agriculture_employee WHERE del_flag = 0 ) employee
+                JOIN ( SELECT COUNT(*) AS 'batchCount' FROM agriculture_crop_batch WHERE del_flag = 0 ) batch
+                JOIN ( SELECT COUNT(*) AS 'pengCount' FROM agriculture_land WHERE land_type = 1 AND del_flag = 0 ) peng;
+    </select>
+    <select id="selectDeviceInfo" resultType="java.util.HashMap">
+        SELECT b.product_name AS 'productName',a.product_id AS 'productId',a.deviceCount
+        FROM ( SELECT product_id, COUNT( device_id ) AS 'deviceCount' FROM iot_device WHERE del_flag = 0 GROUP BY product_id LIMIT 0,3) a LEFT JOIN iot_product b ON a.product_id = b.product_id
+
+        UNION ALL
+
+        SELECT '其他' AS 'productName',0 AS 'productId',COUNT(deviceCount) AS 'deviceCount'
+        FROM( SELECT product_id, COUNT( device_id ) AS 'deviceCount' FROM iot_device WHERE del_flag = 0 GROUP BY product_id LIMIT 3,2) a LEFT JOIN iot_product b ON a.product_id = b.product_id
+
+        UNION ALL
+
+        SELECT '合计' AS 'productName',0 AS 'productId',COUNT(device_id) AS 'deviceCount'
+        FROM iot_device WHERE del_flag = 0
+    </select>
+    <select id="selectDeviceJobInfo" resultType="java.util.HashMap">
+        SELECT
+            a.status,
+            a.jobCount,
+            IF(b.resultCount ,b.resultCount ,0) as 'resultCount'
+        FROM
+            ( SELECT STATUS, COUNT( job_id ) AS 'jobCount' FROM iot_device_job GROUP BY STATUS ) a
+            LEFT JOIN ( SELECT STATUS, COUNT( job_log_id ) AS 'resultCount' FROM sys_job_log GROUP BY STATUS ) b ON a.STATUS = b.STATUS;
+    </select>
+    <select id="selectTraceInfo" resultType="java.util.HashMap">
+        SELECT a.date,COUNT(a.record_id) AS 'num' FROM (SELECT *,DATE_FORMAT(query_date,'%Y-%m-%d') as 'date' FROM agriculture_trace_record) a GROUP BY a.date
+    </select>
+    <select id="selectTaskInfo" resultType="java.util.HashMap">
+        SELECT `status`,COUNT(task_id) AS 'num' FROM agriculture_batch_task GROUP BY status
+    </select>
+    <select id="selectAreaInfo" resultType="java.util.HashMap">
+        SELECT a.crop_area AS 'value',b.crop_name AS 'name' FROM agriculture_crop_batch a LEFT JOIN agriculture_germplasm b on a.germplasm_id = b.germplasm_id
+    </select>
+    <select id="selectRecordGroupByCity" resultType="java.util.HashMap">
+        SELECT query_city AS 'queryCity',COUNT(record_id) AS 'num'
+        FROM agriculture_trace_record
+        GROUP BY query_city
+    </select>
+    <select id="selectRecordStatistics" resultType="java.util.HashMap">
+        SELECT * FROM
+                (SELECT  COUNT(record_id) AS 'sm' FROM agriculture_trace_record ) a
+                    JOIN
+            (SELECT COUNT(sellpro_id) AS 'cp' FROM agriculture_trace_sellpro WHERE del_flag =0) b
+                    JOIN
+            (SELECT COUNT(version_id) AS 'bb' FROM agriculture_trace_version WHERE del_flag =0) c
+                    JOIN
+            (SELECT COUNT(shop_id) AS 'xsdp' FROM agriculture_trace_shop WHERE del_flag =0 AND shop_type =1) d
+                    JOIN
+            (SELECT  COUNT(shop_id) AS 'xxdp' FROM agriculture_trace_shop WHERE del_flag =0 AND shop_type =2) e
+                    JOIN
+            (SELECT  COUNT(staff_id) AS 'ry' FROM agriculture_trace_staff WHERE del_flag =0) f
+    </select>
+    <select id="selectRecordGroupBySellpro" resultType="java.util.HashMap">
+        SELECT a.num,b.sellpro_name AS 'sellproName'
+        FROM (SELECT sellpro_id,COUNT(record_id) AS 'num' FROM agriculture_trace_record GROUP BY sellpro_id) a LEFT JOIN agriculture_trace_sellpro b ON a.sellpro_id = b.sellpro_id
+    </select>
+</mapper>

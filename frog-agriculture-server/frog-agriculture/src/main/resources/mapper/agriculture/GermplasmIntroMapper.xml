@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.GermplasmIntroMapper">
+
+    <resultMap type="GermplasmIntro" id="GermplasmIntroResult">
+        <result property="introId"    column="intro_id"    />
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="introName"    column="intro_name"    />
+        <result property="introImg"    column="intro_img"    />
+        <result property="introDes"    column="intro_des"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectGermplasmIntroVo">
+        select intro_id, germplasm_id, intro_name, intro_img, intro_des, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_germplasm_intro
+    </sql>
+
+    <select id="selectGermplasmIntroList" parameterType="GermplasmIntro" resultMap="GermplasmIntroResult">
+        <include refid="selectGermplasmIntroVo"/>
+        <where>
+            <if test="germplasmId != null "> and germplasm_id = #{germplasmId}</if>
+            <if test="introName != null  and introName != ''"> and intro_name like concat('%', #{introName}, '%')</if>
+            <if test="introImg != null  and introImg != ''"> and intro_img = #{introImg}</if>
+            <if test="introDes != null  and introDes != ''"> and intro_des = #{introDes}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+        </where>
+    </select>
+
+    <select id="selectGermplasmIntroByIntroId" parameterType="Long" resultMap="GermplasmIntroResult">
+        <include refid="selectGermplasmIntroVo"/>
+        where intro_id = #{introId}
+    </select>
+
+    <insert id="insertGermplasmIntro" parameterType="GermplasmIntro" useGeneratedKeys="true" keyProperty="introId">
+        insert into agriculture_germplasm_intro
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id,</if>
+            <if test="introName != null and introName != ''">intro_name,</if>
+            <if test="introImg != null and introImg != ''">intro_img,</if>
+            <if test="introDes != null and introDes != ''">intro_des,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="germplasmId != null">#{germplasmId},</if>
+            <if test="introName != null and introName != ''">#{introName},</if>
+            <if test="introImg != null and introImg != ''">#{introImg},</if>
+            <if test="introDes != null and introDes != ''">#{introDes},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGermplasmIntro" parameterType="GermplasmIntro">
+        update agriculture_germplasm_intro
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="germplasmId != null">germplasm_id = #{germplasmId},</if>
+            <if test="introName != null and introName != ''">intro_name = #{introName},</if>
+            <if test="introImg != null and introImg != ''">intro_img = #{introImg},</if>
+            <if test="introDes != null and introDes != ''">intro_des = #{introDes},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where intro_id = #{introId}
+    </update>
+
+    <delete id="deleteGermplasmIntroByIntroId" parameterType="Long">
+        delete from agriculture_germplasm_intro where intro_id = #{introId}
+    </delete>
+
+    <delete id="deleteGermplasmIntroByIntroIds" parameterType="String">
+        delete from agriculture_germplasm_intro where intro_id in
+        <foreach item="introId" collection="array" open="(" separator="," close=")">
+            #{introId}
+        </foreach>
+    </delete>
+</mapper>

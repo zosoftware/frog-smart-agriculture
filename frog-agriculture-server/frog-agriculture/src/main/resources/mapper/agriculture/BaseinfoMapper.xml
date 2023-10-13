@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.BaseinfoMapper">
+    
+    <resultMap type="Baseinfo" id="BaseinfoResult">
+        <result property="baseId"    column="base_id"    />
+        <result property="baseShortName"    column="base_short_name"    />
+        <result property="baseCode"    column="base_code"    />
+        <result property="baseName"    column="base_name"    />
+        <result property="baseLeader"    column="base_leader"    />
+        <result property="leaderTel"    column="leader_tel"    />
+        <result property="baseAddress"    column="base_address"    />
+        <result property="baseArea"    column="base_area"    />
+        <result property="baseAltitude"    column="base_altitude"    />
+        <result property="baseImg"    column="base_img"    />
+        <result property="baseCoordinate"    column="base_coordinate"    />
+        <result property="baseDes"    column="base_des"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectBaseinfoVo">
+        select base_id, base_short_name, base_coordinate,base_code, base_name, base_leader, leader_tel, base_address, base_area, base_altitude, base_img, base_des, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_baseinfo
+    </sql>
+
+    <select id="selectBaseinfoList" parameterType="Baseinfo" resultMap="BaseinfoResult">
+        <include refid="selectBaseinfoVo"/>
+        <where>  
+            <if test="baseShortName != null  and baseShortName != ''"> and base_short_name like concat('%', #{baseShortName}, '%')</if>
+            <if test="baseCode != null  and baseCode != ''"> and base_code = #{baseCode}</if>
+            <if test="baseName != null  and baseName != ''"> and base_name like concat('%', #{baseName}, '%')</if>
+            <if test="baseLeader != null  and baseLeader != ''"> and base_leader = #{baseLeader}</if>
+            <if test="leaderTel != null  and leaderTel != ''"> and leader_tel = #{leaderTel}</if>
+            <if test="baseAddress != null  and baseAddress != ''"> and base_address = #{baseAddress}</if>
+            <if test="baseArea != null  and baseArea != ''"> and base_area = #{baseArea}</if>
+            <if test="baseAltitude != null "> and base_altitude = #{baseAltitude}</if>
+            <if test="baseImg != null  and baseImg != ''"> and base_img = #{baseImg}</if>
+            <if test="baseCoordinate != null  and baseCoordinate != ''"> and base_coordinate = #{baseCoordinate}</if>
+            <if test="baseDes != null  and baseDes != ''"> and base_des = #{baseDes}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectBaseinfoByBaseId" parameterType="Long" resultMap="BaseinfoResult">
+        <include refid="selectBaseinfoVo"/>
+        where base_id = #{baseId}
+    </select>
+
+    <select id="selectBaseinfoLimitOne"  resultMap="BaseinfoResult">
+        <include refid="selectBaseinfoVo"/>
+        LIMIT 1
+    </select>
+        
+    <insert id="insertBaseinfo" parameterType="Baseinfo" useGeneratedKeys="true" keyProperty="baseId">
+        insert into agriculture_baseinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baseShortName != null and baseShortName != ''">base_short_name,</if>
+            <if test="baseCode != null and baseCode != ''">base_code,</if>
+            <if test="baseName != null and baseName != ''">base_name,</if>
+            <if test="baseLeader != null and baseLeader != ''">base_leader,</if>
+            <if test="leaderTel != null and leaderTel != ''">leader_tel,</if>
+            <if test="baseAddress != null and baseAddress != ''">base_address,</if>
+            <if test="baseArea != null and baseArea != ''">base_area,</if>
+            <if test="baseAltitude != null">base_altitude,</if>
+            <if test="baseImg != null and baseImg != ''">base_img,</if>
+            <if test="baseCoordinate != null and baseCoordinate != ''">base_coordinate,</if>
+            <if test="baseDes != null and baseDes != ''">base_des,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baseShortName != null and baseShortName != ''">#{baseShortName},</if>
+            <if test="baseCode != null and baseCode != ''">#{baseCode},</if>
+            <if test="baseName != null and baseName != ''">#{baseName},</if>
+            <if test="baseLeader != null and baseLeader != ''">#{baseLeader},</if>
+            <if test="leaderTel != null and leaderTel != ''">#{leaderTel},</if>
+            <if test="baseAddress != null and baseAddress != ''">#{baseAddress},</if>
+            <if test="baseArea != null and baseArea != ''">#{baseArea},</if>
+            <if test="baseAltitude != null">#{baseAltitude},</if>
+            <if test="baseImg != null and baseImg != ''">#{baseImg},</if>
+            <if test="baseCoordinate != null and baseCoordinate != ''">#{baseCoordinate},</if>
+            <if test="baseDes != null and baseDes != ''">#{baseDes},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseinfo" parameterType="Baseinfo">
+        update agriculture_baseinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baseShortName != null and baseShortName != ''">base_short_name = #{baseShortName},</if>
+            <if test="baseCode != null and baseCode != ''">base_code = #{baseCode},</if>
+            <if test="baseName != null and baseName != ''">base_name = #{baseName},</if>
+            <if test="baseLeader != null and baseLeader != ''">base_leader = #{baseLeader},</if>
+            <if test="leaderTel != null and leaderTel != ''">leader_tel = #{leaderTel},</if>
+            <if test="baseAddress != null and baseAddress != ''">base_address = #{baseAddress},</if>
+            <if test="baseArea != null and baseArea != ''">base_area = #{baseArea},</if>
+            <if test="baseAltitude != null">base_altitude = #{baseAltitude},</if>
+            <if test="baseImg != null and baseImg != ''">base_img = #{baseImg},</if>
+            <if test="baseCoordinate != null and baseCoordinate != ''">base_coordinate = #{baseCoordinate},</if>
+            <if test="baseDes != null and baseDes != ''">base_des = #{baseDes},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where base_id = #{baseId}
+    </update>
+
+    <delete id="deleteBaseinfoByBaseId" parameterType="Long">
+        delete from agriculture_baseinfo where base_id = #{baseId}
+    </delete>
+
+    <delete id="deleteBaseinfoByBaseIds" parameterType="String">
+        delete from agriculture_baseinfo where base_id in 
+        <foreach item="baseId" collection="array" open="(" separator="," close=")">
+            #{baseId}
+        </foreach>
+    </delete>
+</mapper>

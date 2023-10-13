@@ -1,0 +1,13 @@
+jessibuca-pro.js（web-player-pro.js） ---主文件(需要通过script标签引入)
+jessibuca-pro-multi.js（web-player-pro-multi.js） ---多屏主文件(需要通过script标签引入)
+jessibuca-pro-talk.js（web-player-pro-talk.js）---语音通讯主文件(需要通过script标签引入)
+
+- jessibuca-pro.js 与jessibuca-pro-multi.js只需要引用一个即可（不需要两个同时引用）。
+
+decoder-pro.js --- worker解码器(这个库无需引入)
+decoder-pro.wasm ---worker解码器胶水文件(这个库无需引入)
+
+decoder-pro-simd.js ---worker-simd解码器(这个库无需引入)
+decoder-pro-simd.wasm ---worker-simd解码器胶水文件(这个库无需引入)
+
+开源版升级到pro版本，看下upgrade.md文件。

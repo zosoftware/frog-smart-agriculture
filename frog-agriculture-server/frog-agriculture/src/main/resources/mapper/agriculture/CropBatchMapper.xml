@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.CropBatchMapper">
+    
+    <resultMap type="CropBatch" id="CropBatchResult">
+        <result property="batchId"    column="batch_id"    />
+        <result property="batchName"    column="batch_name"    />
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="landId"    column="land_id"    />
+        <result property="cropArea"    column="crop_area"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="batchHead"    column="batch_head"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="germplasmImg"    column="germplasm_img"    />
+    </resultMap>
+
+    <sql id="selectCropBatchVo">
+        select batch_id, batch_name, germplasm_id, land_id, crop_area, start_time, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_crop_batch
+    </sql>
+
+    <select id="selectCropBatchList" parameterType="CropBatch" resultMap="CropBatchResult">
+        SELECT b.*,g.germplasm_img FROM agriculture_crop_batch b LEFT JOIN agriculture_germplasm g on b.germplasm_id = g.germplasm_id
+            <where>
+                <if test="batchName != null  and batchName != ''"> and b.batch_name like concat('%', #{batchName}, '%')</if>
+                <if test="germplasmId != null "> and b.germplasm_id = #{germplasmId}</if>
+                <if test="landId != null "> and b.land_id = #{landId}</if>
+                and b.del_flag = 0
+            </where>
+            order by create_time desc
+    </select>
+    
+    <select id="selectCropBatchByBatchId" parameterType="Long" resultMap="CropBatchResult">
+        <include refid="selectCropBatchVo"/>
+        where batch_id = #{batchId}
+    </select>
+        
+    <insert id="insertCropBatch" parameterType="CropBatch" useGeneratedKeys="true" keyProperty="batchId">
+        insert into agriculture_crop_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="batchName != null and batchName != ''">batch_name,</if>
+            <if test="germplasmId != null">germplasm_id,</if>
+            <if test="landId != null">land_id,</if>
+            <if test="cropArea != null">crop_area,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="batchHead != null">batch_head,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="batchName != null and batchName != ''">#{batchName},</if>
+            <if test="germplasmId != null">#{germplasmId},</if>
+            <if test="landId != null">#{landId},</if>
+            <if test="cropArea != null">#{cropArea},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="batchHead != null">#{batchHead},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCropBatch" parameterType="CropBatch">
+        update agriculture_crop_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="batchName != null and batchName != ''">batch_name = #{batchName},</if>
+            <if test="germplasmId != null">germplasm_id = #{germplasmId},</if>
+            <if test="landId != null">land_id = #{landId},</if>
+            <if test="cropArea != null">crop_area = #{cropArea},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="batchHead != null">batch_head = #{batchHead},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where batch_id = #{batchId}
+    </update>
+
+    <update id="deleteCropBatchByBatchId" parameterType="Long">
+        update  agriculture_crop_batch set del_flag = 2 where batch_id = #{batchId}
+    </update>
+
+    <update id="deleteCropBatchByBatchIds" parameterType="String">
+        update  agriculture_crop_batch set del_flag = 2 where batch_id in
+        <foreach item="batchId" collection="array" open="(" separator="," close=")">
+            #{batchId}
+        </foreach>
+    </update>
+</mapper>

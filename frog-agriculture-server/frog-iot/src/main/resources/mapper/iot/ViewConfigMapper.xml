@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.iot.mapper.ViewConfigMapper">
+    
+    <resultMap type="com.frog.iot.domain.ViewConfig" id="ViewConfigResult">
+        <result property="viewId"    column="view_id"    />
+        <result property="viewData"    column="view_data"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="tenantName"    column="tenant_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectViewConfigVo">
+        select view_id, view_data, product_id, product_name, tenant_id, tenant_name, del_flag, create_by, create_time, update_by, update_time, remark from iot_view_config
+    </sql>
+
+    <select id="selectViewConfigList" parameterType="com.frog.iot.domain.ViewConfig" resultMap="ViewConfigResult">
+        <include refid="selectViewConfigVo"/>
+        <where>  
+            <if test="viewData != null  and viewData != ''"> and view_data = #{viewData}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectViewConfigByViewId" parameterType="Long" resultMap="ViewConfigResult">
+        <include refid="selectViewConfigVo"/>
+        where view_id = #{viewId}
+    </select>
+        
+    <insert id="insertViewConfig" parameterType="com.frog.iot.domain.ViewConfig" useGeneratedKeys="true" keyProperty="viewId">
+        insert into iot_view_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viewData != null">view_data,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="tenantName != null">tenant_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viewData != null">#{viewData},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="tenantName != null">#{tenantName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateViewConfig" parameterType="com.frog.iot.domain.ViewConfig">
+        update iot_view_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="viewData != null">view_data = #{viewData},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="tenantName != null">tenant_name = #{tenantName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where view_id = #{viewId}
+    </update>
+
+    <delete id="deleteViewConfigByViewId" parameterType="Long">
+        delete from iot_view_config where view_id = #{viewId}
+    </delete>
+
+    <delete id="deleteViewConfigByViewIds" parameterType="String">
+        delete from iot_view_config where view_id in 
+        <foreach item="viewId" collection="array" open="(" separator="," close=")">
+            #{viewId}
+        </foreach>
+    </delete>
+</mapper>

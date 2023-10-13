@@ -1,0 +1,69 @@
+Manifest-Version: 1.0
+Main-Class: com.frog.FrogApplication
+Class-Path: javax.servlet-api-4.0.1.jar okhttp-3.14.9.jar thymeleaf-extr
+ as-java8time-3.0.4.RELEASE.jar jna-5.9.0.jar jackson-datatype-jdk8-2.12
+ .5.jar slf4j-api-1.7.32.jar jackson-annotations-2.12.5.jar spring-boot-
+ starter-jdbc-2.5.6.jar spring-core-5.3.12.jar spring-tx-5.3.12.jar erro
+ r_prone_annotations-2.5.1.jar springfox-oas-3.0.0.jar jjwt-0.9.1.jar sp
+ ringfox-core-3.0.0.jar springfox-data-rest-3.0.0.jar UserAgentUtils-1.2
+ 1.jar spring-boot-starter-data-redis-2.5.6.jar swagger-models-2.1.2.jar
+  mysql-connector-java-8.0.27.jar commons-math3-3.6.1.jar spring-plugin-
+ core-2.0.0.RELEASE.jar failureaccess-1.0.1.jar lettuce-core-6.1.5.RELEA
+ SE.jar jackson-core-2.12.5.jar JustAuth-1.16.5.jar mybatis-spring-boot-
+ starter-2.2.0.jar SparseBitSet-1.2.jar reactor-core-3.4.11.jar springfo
+ x-spring-web-3.0.0.jar snakeyaml-1.28.jar commons-collections-3.2.2.jar
+  commons-compress-1.19.jar spring-data-keyvalue-2.5.6.jar log4j-to-slf4
+ j-2.14.1.jar xmlbeans-3.1.0.jar tomcat-embed-websocket-9.0.54.jar sprin
+ g-data-redis-2.5.6.jar spring-jcl-5.3.12.jar jakarta.validation-api-2.0
+ .2.jar mybatis-3.5.7.jar swagger-models-1.6.2.jar httpmime-4.5.13.jar s
+ pring-aop-5.3.12.jar reactive-streams-1.0.3.jar tomcat-embed-core-9.0.5
+ 4.jar netty-handler-4.1.69.Final.jar netty-common-4.1.69.Final.jar oshi
+ -core-5.8.2.jar spring-boot-starter-tomcat-2.5.6.jar netty-resolver-4.1
+ .69.Final.jar simple-http-1.0.5.jar commons-lang3-3.12.0.jar jain-sip-r
+ i-1.3.0-91.jar protobuf-java-3.14.0.jar transmittable-thread-local-2.14
+ .0.jar attoparser-2.0.5.RELEASE.jar spring-webmvc-5.3.12.jar netty-code
+ c-4.1.69.Final.jar thymeleaf-3.0.12.RELEASE.jar velocity-engine-core-2.
+ 3.jar springfox-swagger-ui-3.0.0.jar jboss-logging-3.4.2.Final.jar spri
+ ng-oxm-5.3.12.jar guava-30.1.1-jre.jar pagehelper-spring-boot-autoconfi
+ gure-1.4.0.jar springfox-spring-webmvc-3.0.0.jar pagehelper-5.3.0.jar H
+ ikariCP-4.0.3.jar spring-security-crypto-5.5.3.jar org.eclipse.paho.cli
+ ent.mqttv3-1.2.5.jar commons-collections4-4.4.jar curvesapi-1.06.jar fo
+ rest-core-1.5.19.jar logback-core-1.2.6.jar poi-ooxml-4.1.2.jar spring-
+ boot-starter-thymeleaf-2.5.6.jar forest-spring-boot-starter-1.5.19.jar 
+ log4j-api-2.14.1.jar spring-boot-starter-validation-2.5.6.jar lombok-1.
+ 18.22.jar commons-codec-1.15.jar spring-boot-configuration-processor-2.
+ 5.6.jar byte-buddy-1.10.22.jar hibernate-validator-6.2.0.Final.jar jack
+ son-databind-2.12.5.jar spring-expression-5.3.12.jar spring-data-common
+ s-2.5.6.jar springfox-boot-starter-3.0.0.jar juniversalchardet-1.0.3.ja
+ r poi-ooxml-schemas-4.1.2.jar springfox-swagger-common-3.0.0.jar spring
+ -web-5.3.12.jar spring-boot-devtools-2.5.6.jar poi-4.1.2.jar classgraph
+ -4.8.83.jar jackson-datatype-jsr310-2.12.5.jar commons-pool2-2.9.0.jar 
+ spring-security-web-5.5.3.jar springfox-swagger2-3.0.0.jar com.springso
+ urce.org.apache.log4j-1.2.16.jar spring-plugin-metadata-2.0.0.RELEASE.j
+ ar j2objc-annotations-1.3.jar spring-boot-starter-aop-2.5.6.jar aspectj
+ weaver-1.9.7.jar kaptcha-2.3.2.jar mybatis-spring-boot-autoconfigure-2.
+ 2.0.jar netty-transport-4.1.69.Final.jar httpcore-4.4.14.jar httpclient
+ -4.5.13.jar spring-context-5.3.12.jar spring-boot-starter-web-2.5.6.jar
+  commons-fileupload-1.4.jar jsqlparser-4.2.jar mybatis-spring-2.0.6.jar
+  spring-boot-starter-logging-2.5.6.jar listenablefuture-9999.0-empty-to
+ -avoid-conflict-with-guava.jar mchange-commons-java-0.2.15.jar checker-
+ qual-3.8.0.jar spring-security-config-5.5.3.jar druid-1.2.8.jar jul-to-
+ slf4j-1.7.32.jar unbescape-1.1.6.RELEASE.jar taos-jdbcdriver-2.0.38.jar
+  spring-boot-starter-security-2.5.6.jar spring-jdbc-5.3.12.jar javax.ac
+ tivation-api-1.2.0.jar classmate-1.5.1.jar druid-spring-boot-starter-1.
+ 2.8.jar jakarta.annotation-api-1.3.5.jar thymeleaf-spring5-3.0.12.RELEA
+ SE.jar spring-boot-starter-json-2.5.6.jar commons-io-2.11.0.jar spring-
+ boot-autoconfigure-2.5.6.jar Java-WebSocket-1.5.2.jar springfox-spi-3.0
+ .0.jar mapstruct-1.3.1.Final.jar spring-beans-5.3.12.jar swagger-annota
+ tions-1.6.2.jar spring-boot-starter-2.5.6.jar logback-classic-1.2.6.jar
+  commons-text-1.6.jar jna-platform-5.9.0.jar jaxb-api-2.3.1.jar commons
+ -logging-1.2.jar jsr305-3.0.1.jar fastjson-1.2.78.jar spring-security-o
+ auth2-2.5.1.RELEASE.jar httpclient-cache-4.5.13.jar dom4j-2.1.3.jar spr
+ ing-context-support-5.3.12.jar springfox-schema-3.0.0.jar jackson-modul
+ e-parameter-names-2.12.5.jar forest-spring-1.5.19.jar springfox-spring-
+ webflux-3.0.0.jar netty-buffer-4.1.69.Final.jar quartz-2.3.2.jar spring
+ fox-bean-validators-3.0.0.jar spring-boot-2.5.6.jar swagger-annotations
+ -2.1.2.jar tomcat-embed-el-9.0.54.jar pagehelper-spring-boot-starter-1.
+ 4.0.jar spring-security-core-5.5.3.jar okio-1.17.2.jar filters-2.0.235-
+ 1.jar
+

@@ -1,0 +1,51 @@
+{
+  "id": "2880328",
+  "name": "态势感知",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "180897",
+      "name": "电影",
+      "font_class": "dianying",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "630128",
+      "name": "照相机",
+      "font_class": "zhaoxiangji",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "5270582",
+      "name": "图片-产品详情",
+      "font_class": "tupian",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "20299502",
+      "name": "二级压缩机传感器故障",
+      "font_class": "erjiyasuojichuanganqiguzhang",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "20736120",
+      "name": "录像影棚",
+      "font_class": "luxiangyingpeng",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "9930896",
+      "name": "new",
+      "font_class": "new",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    }
+  ]
+}

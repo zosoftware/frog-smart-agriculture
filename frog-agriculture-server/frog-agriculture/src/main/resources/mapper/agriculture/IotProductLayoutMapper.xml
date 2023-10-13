@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.IotProductLayoutMapper">
+    
+    <resultMap type="IotProductLayout" id="IotProductLayoutResult">
+        <result property="layoutId"    column="layout_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="identifier"    column="identifier"    />
+        <result property="x"    column="x"    />
+        <result property="y"    column="y"    />
+        <result property="w"    column="w"    />
+        <result property="h"    column="h"    />
+    </resultMap>
+
+    <sql id="selectIotProductLayoutVo">
+        select layout_id, user_id, product_id, identifier, x, y,w,h from iot_product_layout
+    </sql>
+
+    <select id="selectIotProductLayoutList" parameterType="IotProductLayout" resultMap="IotProductLayoutResult">
+        <include refid="selectIotProductLayoutVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="identifier != null  and identifier != ''"> and identifier = #{identifier}</if>
+        </where>
+    </select>
+
+        
+    <insert id="insertIotProductLayout" parameterType="IotProductLayout" useGeneratedKeys="true" keyProperty="layoutId">
+        insert into iot_product_layout
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="identifier != null and identifier != ''">identifier,</if>
+            <if test="x != null and x != ''">x,</if>
+            <if test="y != null and y != ''">y,</if>
+            <if test="w != null and w != ''">w,</if>
+            <if test="h != null and h != ''">h,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="identifier != null and identifier != ''">#{identifier},</if>
+            <if test="x != null and x != ''">#{x},</if>
+            <if test="y != null and y != ''">#{y},</if>
+            <if test="w != null and w != ''">#{w},</if>
+            <if test="h != null and h != ''">#{h},</if>
+         </trim>
+    </insert>
+
+
+    <delete id="deleteIotProductLayoutByProductId" parameterType="Long">
+        delete from iot_product_layout  where product_id = #{productId}
+    </delete>
+</mapper>

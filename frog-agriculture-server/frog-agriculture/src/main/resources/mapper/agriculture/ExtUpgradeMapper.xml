@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.ExtUpgradeMapper">
+    
+    <resultMap type="ExtUpgrade" id="ExtUpgradeResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="updateType"    column="update_type"    />
+        <result property="isForceUpdate"    column="is_force_update"    />
+        <result property="androidUrl"    column="android_url"    />
+        <result property="iosUrl"    column="ios_url"    />
+        <result property="con"    column="con"    />
+        <result property="version"    column="version"    />
+        <result property="wgtVersion"    column="wgt_version"    />
+        <result property="versionName"    column="version_name"    />
+        <result property="versionCode"    column="version_code"    />
+        <result property="testUser"    column="test_user"    />
+        <result property="isCurrent"    column="is_current"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectExtUpgradeVo">
+        select record_id, update_type, is_force_update, android_url, ios_url, con, version, wgt_version, version_name, version_code, test_user, is_current, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from ext_upgrade
+    </sql>
+
+    <select id="selectExtUpgradeList" parameterType="ExtUpgrade" resultMap="ExtUpgradeResult">
+        <include refid="selectExtUpgradeVo"/>
+        <where>  
+            <if test="updateType != null  and updateType != ''"> and update_type = #{updateType}</if>
+            <if test="isForceUpdate != null  and isForceUpdate != ''"> and is_force_update = #{isForceUpdate}</if>
+            <if test="androidUrl != null  and androidUrl != ''"> and android_url = #{androidUrl}</if>
+            <if test="iosUrl != null  and iosUrl != ''"> and ios_url = #{iosUrl}</if>
+            <if test="con != null  and con != ''"> and con = #{con}</if>
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="wgtVersion != null  and wgtVersion != ''"> and wgt_version = #{wgtVersion}</if>
+            <if test="versionName != null  and versionName != ''"> and version_name like concat('%', #{versionName}, '%')</if>
+            <if test="versionCode != null  and versionCode != ''"> and version_code = #{versionCode}</if>
+            <if test="testUser != null  and testUser != ''"> and test_user = #{testUser}</if>
+            <if test="isCurrent != null  and isCurrent != ''"> and is_current = #{isCurrent}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectExtUpgradeByRecordId" parameterType="Long" resultMap="ExtUpgradeResult">
+        <include refid="selectExtUpgradeVo"/>
+        where record_id = #{recordId} and del_flag=0
+    </select>
+        
+    <insert id="insertExtUpgrade" parameterType="ExtUpgrade" useGeneratedKeys="true" keyProperty="recordId">
+        insert into ext_upgrade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="updateType != null">update_type,</if>
+            <if test="isForceUpdate != null">is_force_update,</if>
+            <if test="androidUrl != null">android_url,</if>
+            <if test="iosUrl != null">ios_url,</if>
+            <if test="con != null">con,</if>
+            <if test="version != null">version,</if>
+            <if test="wgtVersion != null">wgt_version,</if>
+            <if test="versionName != null">version_name,</if>
+            <if test="versionCode != null">version_code,</if>
+            <if test="testUser != null">test_user,</if>
+            <if test="isCurrent != null">is_current,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="updateType != null">#{updateType},</if>
+            <if test="isForceUpdate != null">#{isForceUpdate},</if>
+            <if test="androidUrl != null">#{androidUrl},</if>
+            <if test="iosUrl != null">#{iosUrl},</if>
+            <if test="con != null">#{con},</if>
+            <if test="version != null">#{version},</if>
+            <if test="wgtVersion != null">#{wgtVersion},</if>
+            <if test="versionName != null">#{versionName},</if>
+            <if test="versionCode != null">#{versionCode},</if>
+            <if test="testUser != null">#{testUser},</if>
+            <if test="isCurrent != null">#{isCurrent},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExtUpgrade" parameterType="ExtUpgrade">
+        update ext_upgrade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="updateType != null">update_type = #{updateType},</if>
+            <if test="isForceUpdate != null">is_force_update = #{isForceUpdate},</if>
+            <if test="androidUrl != null">android_url = #{androidUrl},</if>
+            <if test="iosUrl != null">ios_url = #{iosUrl},</if>
+            <if test="con != null">con = #{con},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="wgtVersion != null">wgt_version = #{wgtVersion},</if>
+            <if test="versionName != null">version_name = #{versionName},</if>
+            <if test="versionCode != null">version_code = #{versionCode},</if>
+            <if test="testUser != null">test_user = #{testUser},</if>
+            <if test="isCurrent != null">is_current = #{isCurrent},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <update id="deleteExtUpgradeByRecordId" parameterType="Long">
+        update ext_upgrade set del_flag = 2 where record_id = #{recordId}
+    </update>
+
+    <update id="deleteExtUpgradeByRecordIds" parameterType="String">
+        update ext_upgrade set del_flag = 2  where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </update>
+</mapper>

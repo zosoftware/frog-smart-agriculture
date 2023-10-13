@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+	<link rel="stylesheet" href="./iconfont.css">
+	<link rel="stylesheet" href="https://unpkg.com/vant@2.12/lib/index.css"/>
+	<style>
+        * {
+            -webkit-touch-callout:none;
+            -webkit-user-select:none;
+            -khtml-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+            }
+		[v-cloak] {
+			display: none;
+		}
+		#player .container {
+			height: 250px;
+			width: 100%;
+			background: rgba(13, 14, 27, 0.7);
+		}
+		#player .tabs{
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			height: 50px;
+			line-height: 50px;
+			border-bottom: 10px solid #eee;
+		}
+		#player .tabs .iconfont{
+			flex: 1;
+			text-align: center;
+		}
+		#player .tabs .iconfont.active{
+			color: #69BB73;
+		}
+		#player .title{
+			height: 50px;
+			line-height: 50px;
+			padding:0 20px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+		#player .title .channel{
+			display: flex;
+			align-items: center;
+			font-size: 12px;
+		}
+		#player .title .date{
+			display: flex;
+			border: 2px solid #eee;
+			width: 50%;
+			height: 25px;
+			line-height: 25px;
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		#player .title .date .time{
+			width: 80%;
+			font-size: 14px;
+			text-align: center;
+		}
+		#player .title .date .icon{
+			height: 100%;
+			width: 20%;
+			background: #69BB73;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		#player .controller .rocker{
+			margin: 15px auto;
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			position: relative;
+			box-sizing: border-box;
+			border: 8px solid #f1f7ed;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		#player .controller .rocker>div{
+			border-radius: 50%;
+			overflow: hidden;
+		}
+		#player .controller .rocker .left{
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translate(0,-50%);
+		}
+		#player .controller .rocker .right{
+			position: absolute;
+			top: 50%;
+			right: 0;
+			transform: translate(0,-50%);
+		}
+		#player .controller .rocker .up{
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%,0);
+		}
+		#player .controller .rocker .down{
+			position: absolute;
+			bottom:  0;
+			left: 50%;
+			transform: translate(-50%,0);
+		}
+		#player .controller .rocker .circle{
+			position: relative;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			border: 1px solid #eee;
+			background-color: #eee;
+		}
+		#player .controller .zoom{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			height: 50px;
+			width: 70%;
+			margin: 0 auto;
+			border-radius: 25px;
+			box-shadow: 0 -8px 5px #eee;
+			overflow: hidden;
+
+		}
+		#player .controller .zoom .van-button{
+			height: 100%;
+		}
+		#player .controller .zoom .text{
+			width: 100%;
+			margin: 0 5px;
+			text-align: center;
+			color: #69BB73;
+		}
+		#player .playback{
+			padding: 0 20px;
+			box-sizing: border-box;
+		}
+		#player .playback .recordItems{
+			border: 1px solid #eee;
+			padding: 10px;
+			border-radius: 8px;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+    <div id="player" v-cloak>
+		<div ref="container" class="container"></div>
+		<div class="tabs">
+			<div v-for="(item,index) in tabsList" :key="index" @click="changTabs(item,index)"
+			:class="['iconfont',item.icon,{active:currentName==item.name}]"></div>
+		</div>
+		<div class="title">
+			<div class="">
+				{{currentName}}
+			</div>
+			<div class="channel" @click="show=true" v-show="currentName=='云台控制'">
+				{{channelName}}<van-icon name="arrow-down" />
+			</div>
+			<div class="date" @click="show1=true" v-show="currentName=='视频回放'">
+				<div class="time">{{timeFormat(value,"yyyy年mm月dd日")}}</div>
+				<div class="icon">
+					<van-icon name="calendar-o" color="#fff"/>
+				</div>
+			</div>
+		</div>
+		<div class="controller" v-show="currentName=='云台控制'">
+			<div class="rocker">
+				<div class="up" @touchstart ="handleDirection('up')" @touchend ="handleDirection('stop')">
+					<van-button plain round icon="arrow-up"></van-button>
+				</div>
+				<div class="down" @touchstart ="handleDirection('down')" @touchend ="handleDirection('stop')">
+					<van-button plain round icon="arrow-down"></van-button>
+				</div>
+				<div class="left" @touchstart ="handleDirection('left')" @touchend ="handleDirection('stop')">
+					<van-button plain round icon="arrow-left"></van-button>
+				</div>
+				<div class="right" @touchstart ="handleDirection('right')" @touchend ="handleDirection('stop')">
+					<van-button plain round icon="arrow"></van-button>
+				</div>
+				<div class="circle"></div>
+			</div>
+			<div class="zoom">
+				<van-button plain round  icon="plus" @touchstart="ptzScale(1)" @touchend.native="ptzStop"></van-button>
+				<div class="text"> 缩放 </div>
+				<van-button plain round icon="minus" @touchstart="ptzScale(2)" @touchend.native="ptzStop"></van-button>
+			</div>
+		</div>
+
+		<div class="playback" v-show="currentName=='视频回放'">
+			<div class="recordItems" v-for="(item,index) in recordItemsList" :key="index" @click="startPlayback(item)">
+				<van-icon name="play-circle-o" color="#69BB73" style="margin-right: 10px;"></van-icon>{{timeFormat(item.start,'hh时MM分ss秒')}} - {{timeFormat(item.end,'hh时MM分ss秒')}}
+			</div>
+		</div>
+
+		<van-popup v-model="show" position="bottom">
+			<van-picker show-toolbar :columns="channelList" @cancel="show = false" @confirm="select"/>
+		</van-popup>
+
+		<van-popup v-model="show1" position="bottom">
+			<van-datetime-picker v-model="value" type="date" @confirm="selectDate" @cancel="show1=false"/>
+		</van-popup>
+
+	</div>
+	<script>
+	    (function(doc, win) {
+	      var docEl = doc.documentElement,
+	      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+	      recalc = function() {
+	        var clientWidth = docEl.clientWidth;
+	        if(!clientWidth) return;
+	      };
+	      if(!doc.addEventListener) return;
+	      win.addEventListener(resizeEvt, recalc, false);
+	      doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	</script>
+
+	<script type="text/javascript" src="./jessibuca-pro.js"></script>
+	<script type="text/javascript" src="./axios.js"></script>
+	<script type="text/javascript" src="./uni.webview.1.5.4.js"></script>
+	<script type="text/javascript" src="./vue.js"></script>
+	<script type="text/javascript" src="./uuidv4.min.js"></script>
+	<script src="https://unpkg.com/vant@2.12/lib/vant.min.js"></script>
+	<script type="text/javascript" src="./vconsole.js"></script>
+
+	<script >
+
+		// import setting from './setting.js';
+		// console.log(test)
+		let vue = Vue
+		document.addEventListener("UniAppJSBridgeReady", function() {
+			vue.prototype.myUni = uni
+		});
+		new vue({
+			el: '#player',
+			data: {
+				loading: false,
+				streamId: '',
+				deviceId: '',
+				channelId: '',
+				params:{},
+				tabsList:[
+					{
+						icon:"icon-erjiyasuojichuanganqiguzhang",
+						name:"云台控制",
+					},
+					{
+						icon:"icon-dianying",
+						name:"视频回放",
+					},
+					{
+						icon:"icon-luxiangyingpeng",
+						name:"视频录制",
+					},
+					{
+						icon:"icon-zhaoxiangji",
+					},
+				],
+				currentName:"云台控制",
+				channelName:"无通道",
+				channelList:[],
+				defaultIndex:[0],
+				show:false,
+				show1:false,
+				value:new Date(),
+				recordItemsList:[],
+				request:null,
+			},
+			async mounted() {
+				var str = window.location.search.substr(1)
+				var params = {};
+				str.split('&').forEach((item)=>{
+				  let kv = item.split('=');
+				  params[kv[0]] = kv[1];
+				});
+				this.params = params
+				await this.createAxios(params.fetchUrl)
+				await this.getChannelList(params.serialNumber)
+				await this.create();
+				//然后再赋值播放
+				if (this.deviceId && this.channelId) {
+					this.play();
+				} else {
+					uni.showToast({
+						icon: "none",
+						title: '没有通道',
+						position: "bottom"
+					})
+				}
+			},
+			// watch:{
+			// 	value:{
+			// 		handler(val){
+			// 			this.playBack()
+			// 		}
+			// 	}
+			// },
+			destroyed() {
+				// this.stopPlay();
+				// this.stopPlayBack();
+			},
+			methods:{
+				timeFormat(dateTime = null, formatStr = 'yyyy-mm-dd') {
+					let date
+					// 若传入时间为假值，则取当前时间
+					if (!dateTime) {
+						date = new Date()
+					}
+					// 若为unix秒时间戳，则转为毫秒时间戳（逻辑有点奇怪，但不敢改，以保证历史兼容）
+					else if (/^\d{10}$/.test(dateTime?.toString().trim())) {
+						date = new Date(dateTime * 1000)
+					}
+					// 若用户传入字符串格式时间戳，new Date无法解析，需做兼容
+					else if (typeof dateTime === 'string' && /^\d+$/.test(dateTime.trim())) {
+						date = new Date(Number(dateTime))
+					}
+					// 处理平台性差异，在Safari/Webkit中，new Date仅支持/作为分割符的字符串时间
+					// 处理 '2022-07-10 01:02:03'，跳过 '2022-07-10T01:02:03'
+					else if (typeof dateTime === 'string' && dateTime.includes('-') && !dateTime.includes('T')) {
+						date = new Date(dateTime.replace(/-/g, '/'))
+					}
+					// 其他都认为符合 RFC 2822 规范
+					else {
+						date = new Date(dateTime)
+					}
+
+					const timeSource = {
+						'y': date.getFullYear().toString(), // 年
+						'm': (date.getMonth() + 1).toString().padStart(2, '0'), // 月
+						'd': date.getDate().toString().padStart(2, '0'), // 日
+						'h': date.getHours().toString().padStart(2, '0'), // 时
+						'M': date.getMinutes().toString().padStart(2, '0'), // 分
+						's': date.getSeconds().toString().padStart(2, '0') // 秒
+						// 有其他格式化字符需求可以继续添加，必须转化成字符串
+					}
+
+					for (const key in timeSource) {
+						const [ret] = new RegExp(`${key}+`).exec(formatStr) || []
+						if (ret) {
+							// 年可能只需展示两位
+							const beginIndex = key === 'y' && ret.length === 2 ? 2 : 0
+							formatStr = formatStr.replace(ret, timeSource[key].slice(beginIndex))
+						}
+					}
+
+					return formatStr
+				},
+				createAxios(fetchUrl){
+					axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
+					this.request = axios.create({
+					  baseURL:fetchUrl,//setting.fetchUrl,
+					  timeout: 5000
+					})
+					this.request.interceptors.request.use(config => {
+					  if (this.params.token) {
+						config.headers['Authorization'] = 'Bearer ' + this.params.token // 让每个请求携带自定义token 请根据实际情况自行修改
+					  }
+					  return config
+					}, error => {
+						Promise.reject(error)
+					})
+					this.request.interceptors.response.use(res => {
+						const code = res.data.code || 200;
+						const msg = res.data.msg
+						if (code === 401) {
+							this.myUni.postMessage({
+								data: {
+									code:code
+								},
+							})
+							return Promise.reject('401 error')
+						} else if (code === 500) {
+							this.myUni.postMessage({
+								data: {
+									code:code
+								},
+							})
+							return Promise.reject(new Error(msg))
+						} else if (code === 502) {
+							this.myUni.postMessage({
+								data: {
+									code:code
+								},
+							})
+						  return Promise.reject('error')
+						} else if (code !== 200) {
+							this.myUni.postMessage({
+								data: {
+									code:code
+								},
+							})
+							return Promise.reject('error')
+						} else {
+							return res.data
+						}
+						return res.data
+					},
+					error => {
+					let { message } = error;
+						if (message == "Network Error") {
+						  message = "后端接口连接异常";
+						}
+						else if (message.includes("timeout")) {
+						  message = "系统接口请求超时";
+						}
+						else if (message.includes("Request failed with status code")) {
+						  message = "系统接口" + message.substr(message.length - 3) + "异常";
+						}
+						this.myUni.postMessage({
+							data: {
+								msg:message
+							},
+						})
+						return Promise.reject(message)
+					  }
+					)
+				},
+				async getChannelList(id){
+					let res = await this.request({
+						method:'get',
+						url:'/sip/channel/list',
+						params:{deviceSipId:id}
+					})
+					if(res.rows.length>0){
+						this.deviceId=res.rows[0].deviceSipId
+						this.channelId=res.rows[0].channelSipId
+						this.channelName = res.rows[0].channelName
+						this.channelList = res.rows.map(item=>{
+							return {
+								deviceSipId:item.deviceSipId,
+								channelSipId:item.channelSipId,
+								text:item.channelName?item.channelName:item.channelSipId
+							}
+						})
+					}
+				},
+				select(data,index){
+					// this.stopPlay()
+					this.recordItemsList=[]
+					// this.defaultIndex=index
+					this.channelName=data.text
+					this.deviceId=data.deviceSipId
+					this.channelId=data.channelSipId
+					this.show=false
+					this.play()
+				},
+				selectDate(){
+					this.show1=false
+					this.playBack()
+				},
+				async create(type) {
+					this.$jessibucaPro && await this.$jessibucaPro.destroy();
+					let config = {
+						container: this.$refs.container,
+						videoBuffer: 0.1, // 缓存时长
+						videoBufferDelay: 0.2, //
+						loadingText: '加载中',
+						decoder: "./decoder-pro.js",
+						isResize: false,
+						isFlv: true,
+						debug: false,
+						useMSE: false,
+						useSIMD: true,
+						debugLevel: 'debug',
+						showBandwidth: false, // 显示网速
+						showPerformance: false, // 显示性能
+						showPlaybackOperate: true,
+						operateBtns: {
+							fullscreen: true,
+							screenshot: false,
+							play: true,
+							audio: false,
+							record: false,
+							ptz: false,
+							performance: false,
+							fullscreenFn:this.fullscreenFn,
+							fullscreenExitFn:this.fullscreenExitFn,
+							recordStopFn:this.StopRecord,
+							screenshotFn:this.screenShot
+						},
+						ptzClickType: 'mouseDownAndUp'
+					}
+					 const jessibucaPro = new JessibucaPro(config);
+
+					jessibucaPro.on("pause", (flag) => {
+						this.$streamId && this.pausePlayBack();
+					})
+					jessibucaPro.on("play", (flag) => {
+						this.$streamId && this.replayPlayBack();
+					})
+					jessibucaPro.on("playbackSeek", (d) => {
+						this.seekPlayBack(d);
+					})
+					this.$jessibucaPro = jessibucaPro;
+				},
+				/** 直播 */
+				async play() {
+					if (this.deviceId && this.channelId) {
+						await this.request({
+							method:'get',
+							url:'/sip/player/play/' + this.deviceId + "/" + this.channelId
+						})
+						const response = await this.request({
+							method:'get',
+							url:'/sip/player/playstream/' + this.deviceId + "/" + this.channelId
+						})
+
+						let res = JSON.parse(response.data);
+
+						this.streamId = res.streamId;
+						res.playurl && this.$jessibucaPro.play(res.playurl);
+					}
+				},
+				/** 停止播放直播 */
+				async stopPlay() {
+					if (this.deviceId && this.channelId) {
+						this.request({
+							method:'get',
+							url:'/sip/player/playstop/' + this.deviceId + "/" + this.channelId + "/" + this.streamId
+						})
+					}
+				},
+				/** 回播 */
+				async playBack() {
+					let date = new Date(new Date(this.value).toLocaleDateString()).getTime(); //XXXX-XX-XX 00:00:00的时间戳
+					this.$start = date / 1000; //XXXX-XX-XX 00:00:00时间戳的秒数
+					this.$end = Math.floor((date + 24 * 60 * 60 * 1000 - 1) / 1000); //XXX-XX-XX 23:59:59时间戳的秒数
+					this.loading = true;
+					const {data: {recordItems}} = await this.request({
+						method:'get',
+						url:'/sip/record/devquery/' + this.deviceId + "/" + this.channelId,
+						params:{
+							start: this.$start,
+							end: this.$end
+						}
+					})
+					this.$videoStart = recordItems[0].start; //设置录像开始时间
+					if (recordItems && recordItems.length > 0) {
+						this.recordItemsList = recordItems
+						// //播放时间为第一段录像的开始时间到结束
+						const res = await this.request({
+							method:'get',
+							url:'/sip/player/playback/' + this.deviceId + "/" + this.channelId,
+							params:{
+								start: this.$videoStart,
+								end: this.$end
+							}
+						})
+						this.$ssrc = res.data.ssrc;
+						this.$streamId = res.data.streamId;
+						this.loading = false;
+						this.$jessibucaPro.playback(res.data.playurl, {
+							playList: recordItems,
+							fps: 20
+						})
+					} else {
+						uni.showToast({
+							icon: "none",
+							title: '当前没有录像',
+							position: "bottom"
+						})
+					}
+				},
+				/** 点击开始回放 */
+				async startPlayback(data){
+					if (this.$ssrc) {
+						const query = {
+							seek: data.start - this.$videoStart==0?1:data.start - this.$videoStart
+						}
+						this.request({
+							method:'get',
+							url:'/sip/player/playbackSeek/' + this.deviceId + "/" + this.channelId + "/" + this.$ssrc,
+							params:query
+						}).then(res => {
+							this.$jessibucaPro.setPlaybackStartTime(data.startTimestamp)
+						})
+					}
+				},
+				/** 停止回播 */
+				stopPlayBack() {
+					if (this.deviceId && this.channelId) {
+						this.request({
+							method:'get',
+							url:'/sip/player/playbackStop/' + this.deviceId + "/" + this.channelId + "/" + this.$ssrc
+						})
+					}
+				},
+				/** 暂停回播 */
+				pausePlayBack() {
+					if (this.deviceId && this.channelId) {
+						this.request({
+							method:'get',
+							url:'/sip/player/playbackPause/' + this.deviceId + "/" + this.channelId + "/" + this.$ssrc
+						})
+					}
+				},
+				/** 重新播放回播*/
+				replayPlayBack() {
+					if (this.deviceId && this.channelId) {
+						this.request({
+							method:'get',
+							url:'/sip/player/playbackReplay/' + this.deviceId + "/" + this.channelId + "/" + this.$ssrc
+						})
+					}
+				},
+				/** 选时播放 */
+				seekPlayBack(time) {
+					let curTime = this.$start + time.hour * 3600 + time.min * 60 + time.second;
+					let range = this.$start + time.hour * 3600 + time.min * 60 + time.second - this.$videoStart; //视频开始时间到当前时间的秒数
+					if (this.$ssrc) {
+						const query = {
+							seek: range,
+						}
+						if (this.deviceId && this.channelId) {
+							this.request({
+								method:'get',
+								url:'/sip/player/playbackSeek/' + this.deviceId + "/" + this.channelId + "/" + this.$ssrc,
+								params:query
+							}).then(res => {
+								this.$jessibucaPro.setPlaybackStartTime(curTime)
+							})
+						}
+					}
+				},
+				/** 方向控制 */
+				ptzDirection(leftRight, upDown) {
+					var data = {
+						leftRight: leftRight,
+						upDown: upDown,
+						moveSpeed: 125,
+					};
+					if (this.deviceId && this.channelId) {
+						this.request({
+							method:'post',
+							url:'/sip/ptz/direction/'+ this.deviceId + "/" + this.channelId ,
+							data:data
+						})
+					}
+				},
+				handleDirection(d){
+					switch (d) {
+						case 'up':
+							this.ptzDirection(0, 1);
+							break;
+						case 'down':
+							this.ptzDirection(0, 2);
+							break;
+						case 'left':
+							this.ptzDirection(2, 0);
+							break;
+						case 'right':
+							this.ptzDirection(1, 0);
+							break;
+						case 'stop':
+							this.ptzDirection(0, 0);
+							break;
+					}
+				},
+				async changTabs(data,index){
+					if(index<2){
+						this.currentName=data.name
+						if(index==0){
+							// this.stopPlayBack();
+							await this.create()
+							this.play()
+						}else if(index==1){
+							this.value=new Date()
+							// this.stopPlay()
+							await this.create()
+							this.playBack()
+						}
+					}else if(index==2){
+						// this.startRecord()
+					}else if(index==3){
+						this.screenShot()
+					}
+				},
+				fullscreenFn(){
+					plus.screen.lockOrientation("landscape-primary");
+					this.$jessibucaPro.setFullscreen(true)
+				},
+				fullscreenExitFn(){
+					plus.screen.lockOrientation('portrait-primary');
+					this.$jessibucaPro.setFullscreen(false)
+				},
+				ptzScale(inOut){
+					let data = {
+						inOut:inOut,
+						scaleSpeed:30
+					}
+					this.request({
+						method:'post',
+						url:'/sip/ptz/scale/'+ this.deviceId + "/" + this.channelId,
+						data:data
+					})
+				},
+				ptzStop(){
+					this.request({
+						method:'post',
+						url:'/sip/ptz/scale/'+ this.deviceId + "/" + this.channelId,
+						data:{
+							inOut:0,
+							scaleSpeed:30
+						}
+					})
+				},
+				startRecord(){
+					if(this.loading == false){
+						this.$jessibucaPro.startRecord()
+					}
+				},
+				StopRecord(){
+					this.$jessibucaPro.stopRecordAndSave("blob").then(fileBlob=>{
+						let name = uuidv4();
+						const myFile = new File([fileBlob], name+".mp4", { type: 'video/mp4' });
+						console.log(myFile);
+						this.myUni.postMessage({
+							data: {
+								file:fileBlob
+							},
+						})
+					})
+				},
+				screenShot(){
+					if(this.loading == false){
+						let name = uuidv4();
+						const base64=this.$jessibucaPro.screenshot(name, "png", 1,'base64')
+						this.myUni.postMessage({
+							data: {
+								img:base64
+							},
+						})
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

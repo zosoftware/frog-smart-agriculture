@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.TraceSellproMapper">
+    
+    <resultMap type="TraceSellpro" id="TraceSellproResult">
+        <result property="sellproId"    column="sellpro_id"    />
+        <result property="sellproName"    column="sellpro_name"    />
+        <result property="sellproArea"    column="sellpro_area"    />
+        <result property="sellproWeight"    column="sellpro_weight"    />
+        <result property="sellproGuige"    column="sellpro_guige"    />
+        <result property="sellproImg"    column="sellpro_img"    />
+        <result property="germplasmId"    column="germplasm_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="landId"    column="land_id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="staffId"    column="staff_id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="h5Url"    column="h5_url"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectTraceSellproVo">
+        select sellpro_id, sellpro_name, sellpro_area, sellpro_weight, sellpro_guige, sellpro_img, germplasm_id, batch_id, land_id, device_id, camera_id, staff_id, shop_id, h5_url, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_trace_sellpro
+    </sql>
+
+    <select id="selectTraceSellproList" parameterType="TraceSellpro" resultMap="TraceSellproResult">
+        <include refid="selectTraceSellproVo"/>
+        <where>  
+            <if test="sellproName != null  and sellproName != ''"> and sellpro_name like concat('%', #{sellproName}, '%')</if>
+            <if test="sellproArea != null  and sellproArea != ''"> and sellpro_area = #{sellproArea}</if>
+            <if test="sellproWeight != null  and sellproWeight != ''"> and sellpro_weight = #{sellproWeight}</if>
+            <if test="sellproGuige != null  and sellproGuige != ''"> and sellpro_guige = #{sellproGuige}</if>
+            <if test="sellproImg != null  and sellproImg != ''"> and sellpro_img = #{sellproImg}</if>
+            <if test="germplasmId != null  and germplasmId != ''"> and germplasm_id = #{germplasmId}</if>
+            <if test="batchId != null  and batchId != ''"> and batch_id = #{batchId}</if>
+            <if test="landId != null  and landId != ''"> and land_id = #{landId}</if>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="cameraId != null  and cameraId != ''"> and camera_id = #{cameraId}</if>
+            <if test="staffId != null  and staffId != ''"> and staff_id = #{staffId}</if>
+            <if test="shopId != null  and shopId != ''"> and shop_id = #{shopId}</if>
+            <if test="h5Url != null  and h5Url != ''"> and h5_url = #{h5Url}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectTraceSellproBySellproId" parameterType="Long" resultMap="TraceSellproResult">
+        <include refid="selectTraceSellproVo"/>
+        where sellpro_id = #{sellproId} and del_flag=0
+    </select>
+        
+    <insert id="insertTraceSellpro" parameterType="TraceSellpro" useGeneratedKeys="true" keyProperty="sellproId">
+        insert into agriculture_trace_sellpro
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sellproName != null and sellproName != ''">sellpro_name,</if>
+            <if test="sellproArea != null and sellproArea != ''">sellpro_area,</if>
+            <if test="sellproWeight != null and sellproWeight != ''">sellpro_weight,</if>
+            <if test="sellproGuige != null and sellproGuige != ''">sellpro_guige,</if>
+            <if test="sellproImg != null and sellproImg != ''">sellpro_img,</if>
+            <if test="germplasmId != null and germplasmId != ''">germplasm_id,</if>
+            <if test="batchId != null and batchId != ''">batch_id,</if>
+            <if test="landId != null and landId != ''">land_id,</if>
+            <if test="deviceId != null and deviceId != ''">device_id,</if>
+            <if test="cameraId != null and cameraId != ''">camera_id,</if>
+            <if test="staffId != null and staffId != ''">staff_id,</if>
+            <if test="shopId != null and shopId != ''">shop_id,</if>
+            <if test="h5Url != null and h5Url != ''">h5_url,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sellproName != null and sellproName != ''">#{sellproName},</if>
+            <if test="sellproArea != null and sellproArea != ''">#{sellproArea},</if>
+            <if test="sellproWeight != null and sellproWeight != ''">#{sellproWeight},</if>
+            <if test="sellproGuige != null and sellproGuige != ''">#{sellproGuige},</if>
+            <if test="sellproImg != null and sellproImg != ''">#{sellproImg},</if>
+            <if test="germplasmId != null and germplasmId != ''">#{germplasmId},</if>
+            <if test="batchId != null and batchId != ''">#{batchId},</if>
+            <if test="landId != null and landId != ''">#{landId},</if>
+            <if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+            <if test="cameraId != null and cameraId != ''">#{cameraId},</if>
+            <if test="staffId != null and staffId != ''">#{staffId},</if>
+            <if test="shopId != null and shopId != ''">#{shopId},</if>
+            <if test="h5Url != null and h5Url != ''">#{h5Url},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTraceSellpro" parameterType="TraceSellpro">
+        update agriculture_trace_sellpro
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sellproName != null and sellproName != ''">sellpro_name = #{sellproName},</if>
+            <if test="sellproArea != null and sellproArea != ''">sellpro_area = #{sellproArea},</if>
+            <if test="sellproWeight != null and sellproWeight != ''">sellpro_weight = #{sellproWeight},</if>
+            <if test="sellproGuige != null and sellproGuige != ''">sellpro_guige = #{sellproGuige},</if>
+            <if test="sellproImg != null and sellproImg != ''">sellpro_img = #{sellproImg},</if>
+            <if test="germplasmId != null and germplasmId != ''">germplasm_id = #{germplasmId},</if>
+            <if test="batchId != null and batchId != ''">batch_id = #{batchId},</if>
+            <if test="landId != null and landId != ''">land_id = #{landId},</if>
+            <if test="deviceId != null and deviceId != ''">device_id = #{deviceId},</if>
+            <if test="cameraId != null and cameraId != ''">camera_id = #{cameraId},</if>
+            <if test="staffId != null and staffId != ''">staff_id = #{staffId},</if>
+            <if test="shopId != null and shopId != ''">shop_id = #{shopId},</if>
+            <if test="h5Url != null and h5Url != ''">h5_url = #{h5Url},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where sellpro_id = #{sellproId}
+    </update>
+
+    <update id="deleteTraceSellproBySellproId" parameterType="Long">
+        update agriculture_trace_sellpro set del_flag = 2 where sellpro_id = #{sellproId}
+    </update>
+
+    <update id="deleteTraceSellproBySellproIds" parameterType="String">
+        update agriculture_trace_sellpro set del_flag = 2  where sellpro_id in
+        <foreach item="sellproId" collection="array" open="(" separator="," close=")">
+            #{sellproId}
+        </foreach>
+    </update>
+</mapper>

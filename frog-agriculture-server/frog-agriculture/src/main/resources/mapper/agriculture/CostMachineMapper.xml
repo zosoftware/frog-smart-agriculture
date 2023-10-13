@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.agriculture.mapper.CostMachineMapper">
+    
+    <resultMap type="CostMachine" id="CostMachineResult">
+        <result property="costId"    column="cost_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="machineId"    column="machine_id"    />
+        <result property="machineCount"    column="machine_count"    />
+        <result property="workingHours"    column="working_hours"    />
+        <result property="workingStart"    column="working_start"    />
+        <result property="workingFinish"    column="working_finish"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectCostMachineVo">
+        select cost_id, task_id, machine_id, machine_count, working_hours, working_start, working_finish, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_cost_machine
+    </sql>
+
+    <select id="selectCostMachineList" parameterType="CostMachine" resultMap="CostMachineResult">
+        <include refid="selectCostMachineVo"/>
+        <where>  
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="machineId != null "> and machine_id = #{machineId}</if>
+            <if test="machineCount != null "> and machine_count = #{machineCount}</if>
+            <if test="workingHours != null "> and working_hours = #{workingHours}</if>
+            <if test="workingStart != null "> and working_start = #{workingStart}</if>
+            <if test="workingFinish != null "> and working_finish = #{workingFinish}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+and del_flag = 0
+        </where>
+    </select>
+    
+    <select id="selectCostMachineByCostId" parameterType="Long" resultMap="CostMachineResult">
+        <include refid="selectCostMachineVo"/>
+        where cost_id = #{costId} and del_flag=0
+    </select>
+        
+    <insert id="insertCostMachine" parameterType="CostMachine" useGeneratedKeys="true" keyProperty="costId">
+        insert into agriculture_cost_machine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="machineId != null">machine_id,</if>
+            <if test="machineCount != null">machine_count,</if>
+            <if test="workingHours != null">working_hours,</if>
+            <if test="workingStart != null">working_start,</if>
+            <if test="workingFinish != null">working_finish,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="machineId != null">#{machineId},</if>
+            <if test="machineCount != null">#{machineCount},</if>
+            <if test="workingHours != null">#{workingHours},</if>
+            <if test="workingStart != null">#{workingStart},</if>
+            <if test="workingFinish != null">#{workingFinish},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCostMachine" parameterType="CostMachine">
+        update agriculture_cost_machine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="machineId != null">machine_id = #{machineId},</if>
+            <if test="machineCount != null">machine_count = #{machineCount},</if>
+            <if test="workingHours != null">working_hours = #{workingHours},</if>
+            <if test="workingStart != null">working_start = #{workingStart},</if>
+            <if test="workingFinish != null">working_finish = #{workingFinish},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where cost_id = #{costId}
+    </update>
+
+    <update id="deleteCostMachineByCostId" parameterType="Long">
+        update agriculture_cost_machine set del_flag = 2 where cost_id = #{costId}
+    </update>
+
+    <update id="deleteCostMachineByCostIds" parameterType="String">
+        update agriculture_cost_machine set del_flag = 2  where cost_id in
+        <foreach item="costId" collection="array" open="(" separator="," close=")">
+            #{costId}
+        </foreach>
+    </update>
+</mapper>

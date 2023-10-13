@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frog.iot.mapper.GoviewProjectMapper">
+    
+    <resultMap type="com.frog.iot.domain.GoviewProject" id="GoviewProjectResult">
+        <result property="id"    column="id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="indexImage"    column="index_image"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectGoviewProjectVo">
+        select id, project_name, state, create_time,update_time, create_by, del_flag, index_image, remarks from iot_goview_project
+    </sql>
+
+    <select id="selectGoviewProjectList" parameterType="com.frog.iot.domain.GoviewProject" resultMap="GoviewProjectResult">
+        <include refid="selectGoviewProjectVo"/>
+        <where>
+            del_flag = 0
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="indexImage != null  and indexImage != ''"> and index_image = #{indexImage}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectGoviewProjectById" parameterType="String" resultMap="GoviewProjectResult">
+        <include refid="selectGoviewProjectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoviewProject" parameterType="com.frog.iot.domain.GoviewProject" keyProperty="id" useGeneratedKeys="true">
+        insert into iot_goview_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="projectName != null and projectName != ''">project_name,</if>
+            <if test="state != null">state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="indexImage != null">index_image,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="projectName != null and projectName != ''">#{projectName},</if>
+            <if test="state != null">#{state},</if>
+            <if test="createTime != null">#{createTime},
+            <if test="updateTime != null">#{updateTime},</if></if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="indexImage != null">#{indexImage},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoviewProject" parameterType="com.frog.iot.domain.GoviewProject">
+        update iot_goview_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">project_name = #{projectName},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="indexImage != null">index_image = #{indexImage},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoviewProjectById" parameterType="String">
+        delete from iot_goview_project where id = #{id}
+    </delete>
+
+    <delete id="deleteGoviewProjectByIds" parameterType="String">
+        update iot_goview_project set del_flag = 1 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

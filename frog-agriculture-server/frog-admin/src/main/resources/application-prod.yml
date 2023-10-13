@@ -1,0 +1,214 @@
+# 项目相关配置
+ruoyi:
+  # 名称
+  name: ruoyi
+  # 版本
+  version: 3.8.0
+  # 版权年份
+  copyrightYear: 2021
+  # 实例演示开关
+  demoEnabled: true
+  # 文件路径，以uploadPath结尾 示例（ Windows配置 D:/uploadPath，Linux配置 /uploadPath）
+  profile: /uploadPath
+  # 获取ip地址开关
+  addressEnabled: true
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 8080
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+
+# 日志配置
+logging:
+  level:
+    com.frog.iot: warn
+    com.frog.agriculture: warn
+    org.springframework: warn
+    com.frog.sip: info
+
+# Spring配置
+spring:
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  # 数据库配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      # 主库数据源
+      master:
+        url: jdbc:mysql://177.7.0.11:3306/frog_agriculture_os?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        password: frog
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+
+      # TDengine数据库
+      tdengine-server:
+        # 默认不启用TDengine，true=启用，false=不启用
+        enabled: false
+        driverClassName: com.taosdata.jdbc.TSDBDriver
+        url: jdbc:TAOS://localhost:6030/frog_agriculture_log?timezone=Asia/Beijing&charset=utf-8
+        username: root
+        password: taosdata
+        dbName: frog
+
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username: frog
+        login-password: wumei-smart
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size:  10MB
+      # 设置总上传的文件大小
+      max-request-size:  20MB
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+  # redis 配置
+  redis:
+    # 地址
+    host: 177.7.0.10
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: frog
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+  # mqtt 配置
+  mqtt:
+    username: frog                      # 账号
+    password: frog                      # 密码
+    host-url: tcp://177.7.0.12:1883            # mqtt连接tcp地址
+    client-id: ${random.int}                   # 客户端Id，不能相同，采用随机数 ${random.value}
+    default-topic: test                        # 默认主题
+    timeout: 30                                # 超时时间
+    keepalive: 30                              # 保持连接
+    clearSession: true                         # 清除会话(设置为false,断开连接，重连后使用原来的会话 保留订阅的主题，能接收离线期间的消息)
+  task:
+    execution:
+      pool:
+        core-size: 10         # 最小连接数
+        max-size: 30          # 最大连接数
+        queue-capacity: 3000  # 最大容量
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: abcdefghijklfrogrstuvwxyz
+  # 令牌有效期（默认30分钟）1440为一天
+  expireTime: 1440
+
+# MyBatis配置
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.frog.**.domain
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /dev-api
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+# sip 配置
+sip:
+  enabled: true                    # 是否启用视频监控SIP，true为启用
+  ip: 177.7.0.13                    # 本地运行为局域网IP地址，部署公网为公网IP地址,如果是docker部署就写容器的IP地址
+  port: 5061                        # SIP端口(保持默认)
+  domain: 3402000000                # 由省级、市级、区级、基层编号组成，参照GB/T 2260-2007，(可保持默认)
+  id: 34020000002000000001          # 同上，另外增加编号，(可保持默认)
+  password: 12345678                # 监控设备接入的密码

@@ -9,7 +9,7 @@
 
 > 官网地址：https://zosoftware.yuque.com/org-wiki-zosoftware-ms7q4x/frog
 >
-> 体验地址：http://system.zosoft.top/   (账号：admin,密码：123admin)
+> 体验地址：http://system.zosoft.top/   (因为最近访问量变多，需要看演示的可以联系客服)
 
 > 联系方式：neal_tsiao（微信号），请备注来意
 >

@@ -7,7 +7,7 @@
 
 ![](img/flow.png)
 
-> 官网地址：http://www.zosoft.top/
+> 官网地址：https://zosoftware.yuque.com/org-wiki-zosoftware-ms7q4x/frog
 >
 > 体验地址：http://system.zosoft.top/   (账号：admin,密码：123admin)
 

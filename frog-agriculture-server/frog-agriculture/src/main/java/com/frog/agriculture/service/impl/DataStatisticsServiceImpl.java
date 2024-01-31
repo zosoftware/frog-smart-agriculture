@@ -47,7 +47,7 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
     @Autowired
     private ThingsModelMapper thingsModelMapper;
     @Autowired
-    private SysUserMapper sysUserMapper;
+    private EmployeeMapper employeeMapper;
     //工作台
     public List<HashMap> selectBaseInfo(){
         return dataStatisticsMapper.selectBaseInfo();
@@ -98,8 +98,8 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
         batchTask.setBatchId(Long.parseLong(traceSellpro.getBatchId()));
         List<BatchTask> batchTaskList = batchTaskMapper.selectBatchTaskList(batchTask);
         for(BatchTask task : batchTaskList){
-            SysUser sysUser = sysUserMapper.selectUserById(task.getTaskHead());
-            task.setUserName(sysUser.getNickName());
+            Employee employee = employeeMapper.selectEmployeeByEmployeeId(task.getTaskHead());
+            task.setUserName(employee==null?"":employee.getEmployeeName());
         }
 
         //图表统计

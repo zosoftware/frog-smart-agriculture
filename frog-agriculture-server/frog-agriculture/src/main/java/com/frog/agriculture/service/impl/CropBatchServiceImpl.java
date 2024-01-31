@@ -56,6 +56,10 @@ public class CropBatchServiceImpl implements ICropBatchService
     @Override
     public List<CropBatch> selectCropBatchList(CropBatch cropBatch)
     {
+        Long userId = SecurityUtils.getUserId();
+        if(!SecurityUtils.isAdmin(userId)) {
+            cropBatch.setBatchHead(SecurityUtils.getUserId());
+        }
         return cropBatchMapper.selectCropBatchList(cropBatch);
     }
 

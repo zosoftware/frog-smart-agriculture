@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCropBatchVo">
-        select batch_id, batch_name, germplasm_id, land_id, crop_area, start_time, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_crop_batch
+        select batch_head,batch_id, batch_name, germplasm_id, land_id, crop_area, start_time, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_crop_batch
     </sql>
 
     <select id="selectCropBatchList" parameterType="CropBatch" resultMap="CropBatchResult">
@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 <if test="batchName != null  and batchName != ''"> and b.batch_name like concat('%', #{batchName}, '%')</if>
                 <if test="germplasmId != null "> and b.germplasm_id = #{germplasmId}</if>
                 <if test="landId != null "> and b.land_id = #{landId}</if>
+                <if test="batchHead != null and batchHead != ''"> and b.batch_head = #{batchHead}</if>
                 and b.del_flag = 0
             </where>
             order by create_time desc

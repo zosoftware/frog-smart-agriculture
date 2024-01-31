@@ -38,6 +38,7 @@
     <select id="selectBatchTaskList" parameterType="BatchTask" resultMap="BatchTaskResult">
         SELECT t.* ,b.batch_name FROM agriculture_batch_task t LEFT JOIN agriculture_crop_batch b on t.batch_id = b.batch_id
         <where>
+            <if test="params.batchHead != null"> and b.batch_head = ${params.batchHead} </if>
             <if test="batchId != null "> and t.batch_id = #{batchId}</if>
             <if test="taskName != null  and taskName != ''"> and t.task_name like concat('%', #{taskName}, '%')</if>
             <if test="params.planStartStart != null and params.planStartEnd != null"> and DATE_FORMAT(plan_start,'%Y-%m-%d') Between '${params.planStartStart}' AND '${params.planStartEnd}' </if>

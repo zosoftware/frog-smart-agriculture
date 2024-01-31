@@ -49,6 +49,10 @@ public class BatchTaskServiceImpl implements IBatchTaskService
     @Override
     public List<BatchTask> selectBatchTaskList(BatchTask batchTask)
     {
+        Long userId = SecurityUtils.getUserId();
+        if(!SecurityUtils.isAdmin(userId)){
+            batchTask.getParams().put("batchHead", userId);
+        }
         return batchTaskMapper.selectBatchTaskList(batchTask);
     }
 
